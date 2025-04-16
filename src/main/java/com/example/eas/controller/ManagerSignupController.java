@@ -27,10 +27,16 @@ public class ManagerSignupController {
 	@PersistenceContext 
 	private EntityManager entityManager; 
 	
+	private final HttpSession session; 
+	
 	private String extractJobRole; 
 	
 	@Autowired 
 	private SessionChecker sessionChecker; 
+	
+	public ManagerSignupController(HttpSession session) { 
+		this.session = session; 
+	} 
 	
 	public String getExtractJobRole() {
 		return extractJobRole;
@@ -70,6 +76,8 @@ public class ManagerSignupController {
 			
 			// Extracting job role from the manager by using their mail address. 
 			extractJobRole = (managerMailId == null || !managerMailId.contains(".")) ? "Invalid Email" : managerMailId.split("[.@]")[1]; 
+			System.out.println("Manager's job role : " + extractJobRole); 
+			session.setAttribute("managerJobRole", extractJobRole); 
 			System.out.println("Manager job role : " + getExtractJobRole()); 
 			
 			

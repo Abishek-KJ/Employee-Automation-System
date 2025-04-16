@@ -57,7 +57,9 @@ public class AddEmployeeService {
 	} 
 	
 	public List<AddEmployee> getAllEmployees(){ 
-		TypedQuery<AddEmployee> query = entityManager.createQuery("SELECT e FROM AddEmployee e ", AddEmployee.class); 
+		String managerJobRole = (String) employeeSession.getAttribute("managerJobRole"); 
+		String pattern = "%" + managerJobRole.toLowerCase() + "%"; 
+		TypedQuery<AddEmployee> query = entityManager.createQuery("SELECT e FROM AddEmployee e WHERE LOWER(e.jobRole) LIKE :jobRolePattern ", AddEmployee.class).setParameter("jobRolePattern", pattern); 
 		return query.getResultList(); 
 	}   
 	
