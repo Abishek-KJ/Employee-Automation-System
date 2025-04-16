@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+	<link rel = "icon" href = "https://static.vecteezy.com/system/resources/previews/053/536/393/non_2x/attended-rpa-multi-color-concept-icon-bots-helping-employees-to-do-tasks-routine-processes-automation-round-shape-line-illustration-abstract-idea-graphic-design-easy-to-use-in-presentation-vector.jpg" type = "image/png"> 
+    <title>Action taken</title> 
+	<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css" />	  
+
+	
+    <style> 
+        table {
+            width: 90%;
+			font-size: 15px; 
+            border-collapse: collapse;
+            margin-top: 20px;
+			margin-left: 40px; 
+			margin-bottom: 310px; 
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden; 
+        } 
+	
+		div.dt-container { 
+			width: 90%; 
+			margin-left: 40px; 
+			margin-bottom: 310px; 
+		    position: relative;
+		    clear: both;
+		} 
+		div.dt-container .dt-paging .dt-paging-button.disabled, div.dt-container .dt-paging .dt-paging-button.disabled:hover, div.dt-container .dt-paging .dt-paging-button.disabled:active {
+		    cursor: default;
+		    color: black;
+		    border: 1px solid transparent;
+		    background: white;
+		    box-shadow: none;
+		} 
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center; 
+        }
+        th {
+            background: #007BFF;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        } 
+		tbody {
+			font-family: 'Segoe UI'!important ; /* Change font */ 
+			font-size: 14px; /* Adjust size */
+			font-weight: normal;
+		} 
+		.accepted{ 
+			color:green; 
+		} 
+		.rejected{ 
+			color:red; 
+		} 
+		.pending{ 
+			color:blue; 
+		} 
+    </style>
+</head>
+<body>
+	<div th:replace="~{fragments/managerpage :: sidebar}"></div> 
+    <h3 style = "margin-left: 20px; font-size: 15px;">Action Taken</h3> 
+    <table id="tookTable">
+        <thead>
+            <tr> 
+                <th>Employee Name</th>
+                <th>Leave Type</th>
+                <th>Leave From</th>
+				<th>Leave To</th> 
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody id="leaveTableBody">
+            <!-- Rows will be added dynamically --> 
+			<tr th:each = "leave : ${allActionTakenLeaves}"> 
+				<td th:text = "${leave.leaveEmployeeName}"></td> 
+				<td th:text = "${leave.leaveType}"></td> 
+				<td th:text = "${leave.leaveFrom}"></td> 
+				<td th:text = "${leave.leaveTo}"></td> 
+				<td th:text = "${leave.status == 1 ? 'Accepted' : (leave.status == 2 ? 'Rejected' : 'Pending')}"></td>				
+			</tr> 
+			
+        </tbody>
+    </table>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script> 
+
+    <script>
+        // Sample data (In actual case, fetch from database)
+        /* const leaveRecords = [
+            { name: "John Doe", type: "Sick Leave", date: "2025-02-15", status: "Approved" },
+            { name: "Jane Smith", type: "Casual Leave", date: "2025-02-12", status: "Pending" }
+        ];
+
+        function populateTable() {
+            const tableBody = document.getElementById("leaveTableBody");
+            leaveRecords.forEach(record => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${record.name}</td>
+                    <td>${record.type}</td>
+                    <td>${record.date}</td>
+                    <td>${record.status}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        } */ 
+
+        // Call function to populate table
+        // populateTable(); 
+		
+		$(document).ready( function () {
+		    $('#tookTable').DataTable();
+		}); 
+		
+    </script> 
+		<footer>
+		<div th:replace="~{fragments/footer :: footer}"></div>  
+	</footer>
+</body>
+</html>

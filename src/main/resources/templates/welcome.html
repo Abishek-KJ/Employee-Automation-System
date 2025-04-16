@@ -1,0 +1,552 @@
+<!-- <!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Page</title> 
+    <link rel = "icon" type = "image/x-icon" href = "Image-1.jpg"> 
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        nav {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            text-align: left; 
+            font-size: 24px;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .main-container {
+            display: flex;
+            flex: 1;
+        }
+
+        .sidebar {
+            width: 200px;
+            background-color: white;
+            color: black;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            border-right: 2px solid #007BFF;
+        }
+
+        .sidebar h2, .sidebar h3 {
+            text-align: center;
+        }
+
+        .sidebar a {
+            color: black;
+            text-decoration: none;
+            padding: 10px;
+            margin: 5px 0;
+            background-color: #e0e0e0;
+            text-align: center;
+            border-radius: 5px;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        .content {
+            flex: 1;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            font-size: 24px;
+            padding: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            
+        }
+
+        input {
+            padding: 10px;
+            margin: 5px;
+            width : 300px; 
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px; 
+            cursor: pointer; 
+			margin-bottom: 5px; 
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        } 
+		
+		.forgot{ 
+			padding: 10px 20px !important; 
+			background-color: white !important;
+			color: #007BFF !important;
+			border: none !important;
+			border-radius: 5px !important;
+			cursor: pointer !important;
+		}
+		
+    </style>
+</head>
+<body>
+    <nav>Employee Automation System</nav>
+
+    <div class="main-container">
+        <div class="sidebar">
+            <h2>Welcome</h2>
+            <h3>Manager Login</h3>
+            <a href="#" onclick="loadPage('manager-signin')">Sign In</a>
+            <a href="#" onclick="loadPage('manager-signup')">Sign Up</a>
+
+            <h3>Employee Login</h3>
+            <a href="#" onclick="loadPage('employee-signin')">Sign In</a>
+            <a href="#" onclick="loadPage('employee-signup')">Sign Up</a>
+        </div>
+
+        <div class="content" id="content">
+            Welcome to the Employee Automation System
+        </div>
+    </div>
+
+    <script>
+        function loadPage(page) {
+            let content = document.getElementById('content');
+            if (page === 'manager-signin') {
+                content.innerHTML = `
+                    <h2>Manager Sign In</h2>
+                    <form>
+                        Email<input type="email" placeholder="johndoe@gmail.com" required><br>
+                        Password<input type="password" placeholder="Password" required><br>
+                        <a href= "/mDashboard"><button type="submit">Sign In</button></a>
+						<a href= "/mDashboard"><button type="submit" id = "forgot">Forgot Password ? </button></a>
+                    </form>
+                `;
+            } else if (page === 'manager-signup') {
+                content.innerHTML = `
+                    <h2>Manager Sign Up</h2>
+                    <form th:action = "@{/manager/save}" th:action = "${managerSignup}" method = "post">
+                        Name<input type="text" placeholder="John Doe" th:field = "*{name}" required><br>
+                        Email<input type="email" placeholder="johndoe@gmail.com" th:field = "*{managerMailId}" required><br>
+                        Password<input type="password" placeholder="Password" th:field = "*{password}" required><br>
+                        <button type="submit">Sign Up</button>
+                    </form>
+                `;
+            } else if (page === 'employee-signin') {
+                content.innerHTML = `
+                    <h2>Employee Sign In</h2> 
+                    <form action = "/employees/login-employee" method = "post">
+                        Email<input type="email" placeholder="adam@gmail.com" name = "mailId" required><br>
+                        Password<input type="password" placeholder="Password" name = "password" required><br>
+                        <button type="submit">Sign In</button>
+						<a href= "/mDashboard"><button type="submit" id = "forgot">Forgot Password ? </button></a>
+                    </form>
+                `;
+            } else if (page === 'employee-signup') {
+                content.innerHTML = `
+                    <h2>Employee Sign Up</h2>
+                    <form>
+                        Name<input type="text" placeholder="Adam" required><br>
+                        Email<input type="email" placeholder="adam@gmail.com" required><br>
+                        Password<input type="password" placeholder="Password" required><br>
+                        <button type="submit">Sign Up</button>
+                    </form>
+                `;
+            }
+        }
+    </script>
+</body>
+</html> --> 
+
+<!-- <!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Page</title> 
+    <link rel="icon" type="image/x-icon" href="Image-1.jpg"> 
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        nav {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            text-align: left; 
+            font-size: 24px;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .main-container {
+            display: flex;
+            flex: 1;
+        }
+
+        .sidebar {
+            width: 200px;
+            background-color: white;
+            color: black;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            border-right: 2px solid #007BFF;
+        }
+
+        .sidebar h2, .sidebar h3 {
+            text-align: center;
+        }
+
+        .sidebar a {
+            color: black;
+            text-decoration: none;
+            padding: 10px;
+            margin: 5px 0;
+            background-color: #e0e0e0;
+            text-align: center;
+            border-radius: 5px;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        .content {
+            flex: 1;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            font-size: 24px;
+            padding: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        input {
+            padding: 10px;
+            margin: 5px;
+            width: 300px; 
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px; 
+            cursor: pointer; 
+            margin-bottom: 5px; 
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        } 
+		
+		.forgot { 
+            padding: 10px 20px !important; 
+            background-color: white !important;
+            color: #007BFF !important;
+            border: none !important;
+            border-radius: 5px !important;
+            cursor: pointer !important;
+        }
+    </style>
+</head>
+<body>
+    <nav>Employee Automation System</nav>
+
+    <div class="main-container">
+        <div class="sidebar">
+            <h2>Welcome</h2>
+            <h3>Manager Login</h3>
+            <a href="#" onclick="loadPage('manager-signin')">Sign In</a>
+            <a href="#" onclick="loadPage('manager-signup')">Sign Up</a>
+
+            <h3>Employee Login</h3>
+            <a href="#" onclick="loadPage('employee-signin')">Sign In</a>
+            <a href="#" onclick="loadPage('employee-signup')">Sign Up</a>
+        </div>
+
+        <div class="content" id="content">
+            Welcome to the Employee Automation System
+        </div>
+    </div>
+
+    <script>
+        function loadPage(page) {
+            let content = document.getElementById('content');
+
+            if (page === 'manager-signin') {
+                content.innerHTML = `
+                    <h2>Manager Sign In</h2>
+                    <form action="/mDashboard" method="post">
+                        <input type="email" name="email" placeholder="johndoe@gmail.com" required><br>
+                        <input type="password" name="password" placeholder="Password" required><br>
+                        <button type="submit">Sign In</button>
+                        <a href="/forgot-password"><button type="button" class="forgot">Forgot Password?</button></a>
+                    </form>
+                `;
+            } else if (page === 'manager-signup') {
+                content.innerHTML = `
+                    <h2>Manager Sign Up</h2>
+                    <form action="/manager/save" method="post">
+                        <input type="text" name="name" placeholder="John Doe" required><br>
+                        <input type="email" name="managerMailId" placeholder="johndoe@gmail.com" required><br>
+                        <input type="password" name="password" placeholder="Password" required><br>
+                        <button type="submit">Sign Up</button>
+                    </form>
+                `;
+            } else if (page === 'employee-signin') {
+                content.innerHTML = `
+                    <h2>Employee Sign In</h2> 
+                    <form action="/employees/login-employee" method="post">
+                        <input type="email" name="mailId" placeholder="adam@gmail.com" required><br>
+                        <input type="password" name="password" placeholder="Password" required><br>
+                        <button type="submit">Sign In</button>
+                        <a href="/forgot-password"><button type="button" class="forgot">Forgot Password?</button></a>
+                    </form>
+                `;
+            } else if (page === 'employee-signup') {
+                content.innerHTML = `
+                    <h2>Employee Sign Up</h2>
+                    <form action="/employees/save" method="post">
+                        <input type="text" name="name" placeholder="Adam" required><br>
+                        <input type="email" name="email" placeholder="adam@gmail.com" required><br>
+                        <input type="password" name="password" placeholder="Password" required><br>
+                        <button type="submit">Sign Up</button>
+                    </form>
+                `;
+            }
+        }
+    </script>
+</body>
+</html> --> 
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel = "icon" href = "https://static.vecteezy.com/system/resources/previews/053/536/393/non_2x/attended-rpa-multi-color-concept-icon-bots-helping-employees-to-do-tasks-routine-processes-automation-round-shape-line-illustration-abstract-idea-graphic-design-easy-to-use-in-presentation-vector.jpg" type = "image/png"> 
+    <title>Welcome Page</title> 
+    <link rel="icon" type="image/x-icon" href="Image-1.jpg"> 
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        nav {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            text-align: left; 
+            font-size: 24px;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .main-container {
+            display: flex;
+            flex: 1;
+        }
+
+        .sidebar {
+            width: 200px;
+            background-color: white;
+            color: black;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            border-right: 2px solid #007BFF;
+        }
+
+        .sidebar h2, .sidebar h3 {
+            text-align: center;
+        }
+
+        .sidebar a {
+            color: black;
+            text-decoration: none;
+            padding: 10px;
+            margin: 5px 0;
+            background-color: #e0e0e0;
+            text-align: center;
+            border-radius: 5px;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        .content {
+            flex: 1;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            font-size: 24px;
+            padding: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        input {
+            padding: 10px;
+            margin: 5px;
+            width: 300px; 
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px; 
+            cursor: pointer; 
+            margin-bottom: 5px; 
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        } 
+        
+        .forgot { 
+            padding: 10px 20px !important; 
+            background-color: white !important;
+            color: #007BFF !important;
+            border: none !important;
+            border-radius: 5px !important;
+            cursor: pointer !important;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <nav>Employee Automation System</nav>
+
+    <div class="main-container">
+        <div class="sidebar">
+            <h2>Welcome</h2>
+            <h3>Manager Login</h3>
+            <a href="#" onclick="loadPage('manager-signin')">Sign In</a>
+            <a href="#" onclick="loadPage('manager-signup')">Sign Up</a>
+
+            <h3>Employee Login</h3>
+            <a href="#" onclick="loadPage('employee-signin')">Sign In</a>
+            <a href="#" onclick="loadPage('employee-signup')">Sign Up</a>
+        </div>
+
+        <div class="content" id="content">
+            Welcome to the Employee Automation System
+        </div>
+    </div>
+
+    <!-- Manager Signup Form (Hidden initially) -->
+    <div id="manager-signup-form" class="hidden">
+        <h2>Manager Sign Up</h2>
+        <form th:action="@{/manager/save}" method="post" th:object="${managerSignup}">
+            <input type="text" th:field="*{name}" placeholder="John Doe" required><br>
+            <input type="email" th:field="*{managerMailId}" placeholder="johndoe@gmail.com" required><br>
+            <input type="password" th:field="*{password}" placeholder="Password" required><br>
+            <button type="submit" onclick = "alert('Manager Signup Successfull!')">Sign Up</button>
+        </form>
+    </div>
+
+    <script>
+        function loadPage(page) {
+            let content = document.getElementById('content');
+
+            if (page === 'manager-signin') {
+                content.innerHTML = `
+                    <h2>Manager Sign In</h2>
+                    <form action = "/manager/login-manager" method = "post"> 
+                        <input type="email" placeholder="johndoe@gmail.com" name = "managerMailId" required><br>
+                        <input type="password" placeholder="Password" name = "password" required><br>
+                        <button type="submit">Sign In</button>
+                        <a href="/mDashboard"><button type="submit" id="forgot">Forgot Password?</button></a>
+                    </form>
+                `;
+            } else if (page === 'manager-signup') {
+                // Instead of using Thymeleaf in JavaScript, replace the content with the pre-rendered Thymeleaf form
+                let signupForm = document.getElementById('manager-signup-form').innerHTML;
+                content.innerHTML = signupForm;
+            } else if (page === 'employee-signin') {
+                content.innerHTML = `
+                    <h2>Employee Sign In</h2> 
+                    <form action="/employees/login-employee" method="post">
+                        <input type="email" placeholder="adam@gmail.com" name="mailId" required><br>
+                        <input type="password" placeholder="Password" name="password" required><br>
+                        <button type="submit">Sign In</button>
+                        <a href="/mDashboard"><button type="submit" id="forgot">Forgot Password?</button></a>
+                    </form>
+                `;
+            } else if (page === 'employee-signup') {
+                content.innerHTML = `
+                    <h2>Employee Sign Up</h2>
+                    <form>
+                        <input type="text" placeholder="Adam" required><br>
+                        <input type="email" placeholder="adam@gmail.com" required><br>
+                        <input type="password" placeholder="Password" required><br>
+                        <button type="submit">Sign Up</button>
+                    </form>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
+
+

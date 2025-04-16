@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="sidebar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M-Index</title> 
+    <link rel="icon" type="image/x-icon" href="Image-1.jpg"> 
+	<link rel = "icon" href = "https://static.vecteezy.com/system/resources/previews/053/536/393/non_2x/attended-rpa-multi-color-concept-icon-bots-helping-employees-to-do-tasks-routine-processes-automation-round-shape-line-illustration-abstract-idea-graphic-design-easy-to-use-in-presentation-vector.jpg" type = "image/png"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }  
+		
+			
+
+        nav {
+            background-color: #007BFF;
+            color: white;
+            padding: 6px 12px;
+            text-align: left;
+            font-size: 16px;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        } 
+
+
+        nav img {
+            width: 30px;
+            height: 30px;
+            margin-right: 2px;
+        } 
+        .appname { 
+			padding-right: 200px; 
+		} 	/* Leave Type is added reduce padding-right=50px */ 
+
+        .navbar {
+            display: flex;
+            background-color: #007BFF;
+            padding: 6px 0;
+            gap: 10px;
+        } 
+		
+		
+
+        .navbar-item {
+            position: relative;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 6px 12px;
+            background-color: #007BFF;
+            border-radius: 5px;
+            transition: background 0.3s, color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .navbar a:hover {
+            background-color: white;
+            color: #007BFF;
+        }
+
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #007BFF;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 5px;
+            padding: 6px 0;
+        }
+
+        .submenu a {
+            padding: 6px 12px;
+            background-color: #007BFF;
+            display: block;
+            white-space: nowrap;
+            font-size: 11px;
+            color: white;
+        }
+
+        .submenu a:hover {
+            background-color: white;
+            color: #007BFF;
+        }
+
+        .user-info {
+            text-align: center;
+            margin: 12px 0;
+        }
+
+        .user-info img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+
+        .user-info p {
+            margin: 6px 0 0;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .content {
+            text-align: center;
+            padding: 12px;
+            font-size: 14px;
+            flex: 1;
+        }
+
+    </style>
+</head>
+<body>
+    <nav> 
+		<a href = "/index">
+      	  <img src="https://static.vecteezy.com/system/resources/previews/053/536/393/non_2x/attended-rpa-multi-color-concept-icon-bots-helping-employees-to-do-tasks-routine-processes-automation-round-shape-line-illustration-abstract-idea-graphic-design-easy-to-use-in-presentation-vector.jpg" alt="EAS Logo">
+		</a>
+        <div class="appname">Employee Automation System</div>  
+        <div class="navbar">
+            <div class="navbar-item">
+                <a href = "/mDashboard" onclick="toggleSubmenu('dashboard')"><i class="fas fa-tachometer-alt"></i> Dashboard</a> 
+            </div> 
+            <div class="navbar-item">
+                <a onclick="toggleSubmenu('department')"><i class="fas fa-building"></i> Department <i class="fas fa-chevron-down toggle-icon"></i></a>
+                <div class="submenu" id="department">
+                    <a href = "/department/show-department-form"><i class="fas fa-plus"></i> Add Department</a>
+                    <a href="/department/departments-list"><i class="fas fa-tasks"></i> Manage Department</a>
+                </div>
+            </div>
+            <!-- <div class="navbar-item">
+                <a onclick="toggleSubmenu('leaveType')"><i class="fas fa-clipboard-list"></i> Leave Type <i class="fas fa-chevron-down toggle-icon"></i></a>
+                <div class="submenu" id="leaveType">
+                    <a href="#"><i class="fas fa-plus-circle"></i> Add Leave Type</a>
+                    <a href="#"><i class="fas fa-cogs"></i> Manage Leave Type</a>
+                </div>
+            </div> --> 
+            <div class="navbar-item">
+                <a onclick="toggleSubmenu('employees')"><i class="fas fa-users"></i> Employees <i class="fas fa-chevron-down toggle-icon"></i></a>
+                <div class="submenu" id="employees">
+                    <a href = "/employees/add"><i class="fas fa-user-plus"></i> Add Employee</a>
+                    <a href="/employees/list"><i class="fas fa-user-cog"></i> Manage Employee</a>
+                </div>
+            </div>
+            <div class="navbar-item">
+                <a onclick="toggleSubmenu('leaveManagement')"><i class="fas fa-calendar-check"></i> Leave Management <i class="fas fa-chevron-down toggle-icon"></i></a>
+                <div class="submenu" id="leaveManagement">
+                    <a href="/apply-leave/action-taken-by-manager"><i class="fas fa-check"></i>Action Taken</a> 
+                    <a href="/apply-leave/all-roles"><i class="fas fa-hourglass-half"></i> Action Required</a>
+                    <!-- <a href="#"><i class="fas fa-check"></i> Approved Leaves</a>
+                    <a href="#"><i class="fas fa-times"></i> Not Approved Leaves</a> --> 
+                </div>
+            </div> 
+            <div class="navbar-item">
+                <a href="/Mchangepassword"><i class="fas fa-key"></i> Change Password</a>
+            </div>
+            <div class="navbar-item">
+                <a href="/welcome"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- <div class="user-info">
+        <img src="https://via.placeholder.com/50" alt="User Icon">
+        <p>Hi, Manager</p>
+    </div> --> 
+
+    <script>
+        function toggleSubmenu(id) {
+            const submenu = document.getElementById(id);
+            if (submenu) {
+                submenu.style.display = submenu.style.display === 'block' ? 'none' : 'block';
+                const toggleIcon = submenu.previousElementSibling.querySelector('.toggle-icon');
+                if (toggleIcon) {
+                    toggleIcon.classList.toggle('fa-chevron-down');
+                    toggleIcon.classList.toggle('fa-chevron-up');
+                }
+            }
+        }
+    </script>
+</body>
+</html> 
+
+

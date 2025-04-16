@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Apply Leave</title>
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel = "icon" href = "https://static.vecteezy.com/system/resources/previews/053/536/393/non_2x/attended-rpa-multi-color-concept-icon-bots-helping-employees-to-do-tasks-routine-processes-automation-round-shape-line-illustration-abstract-idea-graphic-design-easy-to-use-in-presentation-vector.jpg" type = "image/png"> 
+    <style> 
+		body {
+		            font-family: Arial, sans-serif;
+		            background-color: #f4f4f4;
+		            margin: 0;
+		            padding: 0;
+		        }
+
+		        /* Form Container */
+		        .leave-form-container {
+		            max-width: 600px;
+		            background: white;
+		            padding: 20px;
+					padding-right: 50px; 
+		            border-radius: 8px;
+		            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+		            margin: 20px auto; /* Center the form */
+		        }
+
+		        h3 {
+		            text-align: center;
+		            margin-bottom: 20px;
+		        }
+
+		        label {
+		            font-weight: bold;
+		            display: block;
+		            margin-top: 10px;
+		        }
+
+		        select, input, textarea {
+		            width: 100%;
+		            padding: 10px;
+		            margin-top: 5px;
+		            border: 1px solid #ccc;
+		            border-radius: 5px;
+		            font-size: 14px;
+		        }
+
+		        textarea {
+		            resize: vertical;
+		            height: 80px;
+		        }
+
+		        .btn-apply {
+		            width: 100%;
+		            background: #007BFF;
+		            color: white;
+		            padding: 10px;
+		            border: none;
+		            border-radius: 5px;
+		            font-size: 16px;
+		            cursor: pointer;
+		            margin-top: 15px;
+		        }
+
+		        .btn-apply:hover {
+		            background: #0056b3;
+		        }
+
+		        /* Responsive Design */
+		        @media screen and (max-width: 768px) {
+		            .leave-form-container {
+		                width: 90%;
+		            }
+		        }
+	</style> 
+       
+</head> 
+<body> 
+	<div>
+		<div th:replace="~{fragments/employeepage :: sidebar}"></div> 
+	</div> 
+	<!-- Apply Leave Form -->
+	   <div class="leave-form-container">
+	       <h3>Apply Leave</h3>
+	       <form th:action = "@{/apply-leave/apply}" th:object = "${applyLeave}" method="post">
+			
+			<!-- <label>Employee Name(As per registration)</label> 
+			<input type = "text" th:field = "*{leaveEmployeeName}" readonly> --> 
+			
+	           <!-- Leave Type -->
+	           <label>Leave Type</label>
+	           <select th:field = "*{leaveType}" required>
+	               <option value="">Select Leave Type</option>
+	               <option value="Sick Leave">Sick Leave</option>
+	               <option value="Casual Leave">Casual Leave</option>
+	               <option value="Annual Leave">Annual Leave</option>
+				   <option value="Personal Leave">Personal Leave</option>
+	           </select>
+
+	           <!-- Leave From -->
+	           <label>Leave From</label>
+	           <input type="date" id="fromDate" th:field = "*{leaveFrom}" required> 
+
+	           <!-- Leave To -->
+	           <label>Leave To</label>
+	           <input type="date" id = "toDate" th:field = "*{leaveTo}" required> 
+			   
+			   <!-- Select Manager Name --> 
+			   <!-- <label>Team name</label>
+			   <select th:field = "*{teamName}"> 
+			   	 <option value = "">Select Team Name</option> 
+			   	 <option value = "Analyst">Analyst</option> 
+				 <option value = "Developer">Developer</option> 
+				 <option value = "Tester">Tester</option> 
+				 <option value = "Devops">Development Operations</option> 
+				 <option value = "Cloud">Cloud Engineer</option>
+				 <option value = "HR">Human Resource</option>
+				 <option value = "DigitalMarketing">Digital Marketing</option>
+			   </select> --> 
+
+	           <!-- Description -->
+	           <label>Description</label>
+	           <textarea th:field = "*{description}" required></textarea> 
+			   
+	           <!-- Apply Button -->
+	           <button type="submit" class="btn-apply" onclick = "alert('Leave request sent to manager')">Apply Leave</button> 
+	       </form>
+	   </div>
+	   <footer>
+	   	 <div th:replace="~{fragments/footer :: footer}"></div>  
+	   </footer> 
+	   
+	   <!-- Disable Past Dates -->
+	   <script>
+		console.log()
+			const today = new Date().toISOString().split('T')[0]; 
+			document.getElementById("fromDate").setAttribute("min", today); 
+			
+			const today1 = new Date().toISOString().split('T')[0]; 
+			document.getElementById("toDate").setAttribute("min", today); 
+		
+	   </script> 
+    
+</body>
+</html> 

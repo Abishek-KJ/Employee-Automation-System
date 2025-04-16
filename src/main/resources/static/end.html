@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organization Information Form</title> 
+    <link rel = "icon" type = "imagge/x-icon" href = "Image-1.jpg"> 
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        nav {
+            background-color: #007BFF;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+        .nav-title {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            transition: background 0.3s;
+        }
+        nav a:hover {
+            background-color: #0056b3;
+            border-radius: 5px;
+        }
+        .form-container {
+            background-color: white;
+            padding: 50px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            margin: 50px auto;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #555;
+        }
+        input[type="text"], input[type="email"], input[type="tel"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .highlight {
+            background-color: #007BFF;
+            color: #ffffff;
+            text-align: center;
+            padding: 10px;
+            margin: 20px auto;
+            border-radius: 5px;
+            font-weight: bold;
+            width: 90%;
+            max-width: 400px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-title">Employee Automation System</div>
+        <div></div>
+    </nav>
+
+    <div class="form-container">
+        <h2>Organization Info</h2>
+        <form action="#" method="post">
+            <label for="org-name">Organization Name:</label>
+            <input type="text" id="org-name" name="organization_name" required>
+
+            <label for="email">Email Address:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="mobile">Mobile Number:</label>
+            <input type="tel" id="mobile" name="mobile_number" pattern="[0-9]{10}" required placeholder="1234567890">
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <div class="highlight">By filling this form you will get a copy of software</div>
+</body>
+</html>

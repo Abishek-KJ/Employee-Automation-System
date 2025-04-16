@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel = "icon" href = "https://static.vecteezy.com/system/resources/previews/053/536/393/non_2x/attended-rpa-multi-color-concept-icon-bots-helping-employees-to-do-tasks-routine-processes-automation-round-shape-line-illustration-abstract-idea-graphic-design-easy-to-use-in-presentation-vector.jpg" type = "image/png"> 
+    <title>Manage Employee</title> 
+	<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css" />	  
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	
+    <style> 
+        table {
+            width: 90%;
+			font-size: 15px; 
+            border-collapse: collapse;
+            margin-top: 20px;
+			margin-left: 40px; 
+			margin-bottom: 310px; 
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden; 
+        } 
+	
+		div.dt-container { 
+			width: 90%; 
+			margin-left: 40px; 
+			margin-bottom: 310px; 
+		    position: relative;
+		    clear: both;
+		} 
+		div.dt-container .dt-paging .dt-paging-button.disabled, div.dt-container .dt-paging .dt-paging-button.disabled:hover, div.dt-container .dt-paging .dt-paging-button.disabled:active {
+		    cursor: default;
+		    color: black;
+		    border: 1px solid transparent;
+		    background: white;
+		    box-shadow: none;
+		} 
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center; 
+        }
+        th {
+            background: #007BFF;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        } 
+		tbody {
+		    font-family: 'Segoe UI'!important ; /* Change font */ 
+		    font-size: 14px; /* Adjust size */
+			font-weight: normal;
+		}
+    </style>
+</head>
+<body>
+	<div th:replace="~{fragments/managerpage :: sidebar}"></div> 
+    <h3 style = "margin-left: 20px; font-size: 15px;">Manage Employee</h3>
+    <table id="manageEmpTable">
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Job Role</th>
+                <th>Mail ID</th>				
+				<th>Mobile Number</th>
+				<th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="leaveTableBody">
+            <!-- Rows will be added dynamically -->
+			<tr th:each="employee : ${employees}"> 
+				<td th:text="${employee.empCode}"></td> 
+				<td th:text="${employee.empName}"></td> 
+				<td th:text="${employee.jobRole}"></td> 
+				<td th:text="${employee.mailId}"></td>
+				<td th:text="${employee.mobile}"></td>
+				<td>
+					<a style = "padding-right: 10px;"><i class="fa-solid fa-pen" style = "padding-right:5px;"></i>Edit</a>
+					<a><i class="fa-solid fa-trash" style = "padding-right : 5px;"></i>Delete</a>
+				</td>			
+			</tr>
+        </tbody>
+    </table>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script> 
+
+    <script>
+		$(document).ready( function () {
+		    $('#manageEmpTable').DataTable();
+		}); 
+		
+    </script> 
+		<footer>
+		<div th:replace="~{fragments/footer :: footer}"></div>  
+	</footer>
+</body>
+</html>
