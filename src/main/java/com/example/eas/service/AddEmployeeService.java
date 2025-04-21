@@ -133,6 +133,31 @@ public class AddEmployeeService {
 		} 
 	} 
 	
+	// Delete employee by manager 
+	
+	@Transactional 
+	public void deleteEmployeeByCode(String employeeCode) { 
+		/* AddEmployee employee = entityManager.find(AddEmployee.class, employeeCode); 
+		if(employee != null) { 
+			entityManager.remove(employee); 		
+		} 
+		else { 
+			throw new IllegalArgumentException("Employee not found : " + employeeCode); 
+		} */ 
+		
+		if(employeeCode == null || employeeCode.trim().isEmpty()) { 
+			throw new IllegalArgumentException("Employee code must not be null or empty"); 
+		} 
+		
+		String jpql = "DELETE FROM AddEmployee e WHERE e.empCode = :empCode"; 
+		int rowsAffected = entityManager.createQuery(jpql).setParameter("empCode", employeeCode).executeUpdate(); 
+		
+		if(rowsAffected == 0) { 
+			throw new RuntimeException("No employee found with code : " + employeeCode); 
+		} 
+		
+		System.out.println("Employee with code : " + employeeCode + " deleted successfully!"); 
+	} 
 	
 } 
 

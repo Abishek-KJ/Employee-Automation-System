@@ -1,4 +1,4 @@
-<!-- <!DOCTYPE html>
+<!-- <!DOCTYPE html> 
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -403,7 +403,7 @@
             cancelButtonText: 'No'
         }).then((result) => {
             if (result.isConfirmed) {
-                fetch(`/api/delete-employee/${empCode}`, {
+                fetch(`/employees/delete-employee/${empCode}`, {
                     method: 'DELETE'
                 })
                 .then(response => {
