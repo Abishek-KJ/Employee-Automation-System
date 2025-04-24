@@ -363,8 +363,8 @@
             <td th:text="${employee.mailId}"></td>
             <td th:text="${employee.mobile}"></td>
             <td>
-                <i class="fa-solid fa-pen action-icon" style="padding-right: 5px;"></i>
-                <a href="#" style="padding-right: 20px;">Edit</a>
+                <i class="fa-solid fa-pen action-icon" style="padding-right: 5px;" th:attr = "data-empcode = ${employee.empCode}"></i> 
+                <a href="#" class = "edit-btn" style="padding-right: 20px;" th:attr = "data-empcode = ${employee.empCode}">Edit</a> 
 
                 <i class="fa-solid fa-trash action-icon delete-btn" 
                    style="padding-right: 5px;"
@@ -379,7 +379,17 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
 
-<script>
+<script> 
+	
+	// Handle Edit 
+	$(document).on('click', '.edit-btn', function(e){ 
+		e.preventDefault(); 
+		const empCode = $(this).data('empcode'); 
+		if(empCode){ 
+			window.location.href = `/employees/update-form/${empCode}`; 
+		} 
+	}); 
+	
     $(document).ready(function () {
         $('#manageEmpTable').DataTable();
 

@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.eas.controller.AddEmployeeController;
 import com.example.eas.dao.AddEmployeeDAO;
+import com.example.eas.dto.EmployeeUpdateForm;
 import com.example.eas.entity.AddEmployee;
 import com.example.eas.utility.SessionChecker;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
@@ -133,6 +135,52 @@ public class AddEmployeeService {
 		} 
 	} 
 	
+	// Update employee by manager 
+	@Transactional 
+	public void updateEmployeeByManager(EmployeeUpdateForm employeeUpdateForm) { 
+	   	List<AddEmployee> results = entityManager.createQuery("SELECT e FROM AddEmployee e WHERE e.empCode = :empCode", AddEmployee.class)
+				.setParameter("empCode", employeeUpdateForm.getEmpCode())
+				.getResultList(); 
+	   	if(results == null || results.isEmpty()) { 
+	   		throw new EntityNotFoundException("Employee not found with employee code : " + employeeUpdateForm.getEmpCode()); 
+	   	} 
+
+	   	AddEmployee existingEmployee = results.get(0); 
+		
+		
+		if(employeeUpdateForm.getEmpName() != null && !employeeUpdateForm.getEmpName().isBlank()) { 
+			existingEmployee.setEmpName(employeeUpdateForm.getEmpName()); 
+		} 
+		
+		if(employeeUpdateForm.getJobRole() != null && !employeeUpdateForm.getJobRole().isBlank()) { 
+			existingEmployee.setJobRole(employeeUpdateForm.getJobRole()); 
+		} 
+		
+		if(employeeUpdateForm.getJoinDate() != null) { 
+			existingEmployee.setJoinDate(employeeUpdateForm.getJoinDate()); 
+		} 
+		
+		System.out.println(existingEmployee.getJoinDate()); 
+		System.out.println(employeeUpdateForm.getJoinDate()); 
+		
+		// Update employee code if provided and unique 
+		
+		if(employeeUpdateForm.getEmpCode() != null && !employeeUpdateForm.getEmpCode().isBlank() && !employeeUpdateForm.getEmpCode().equals(existingEmployee.getEmpCode())) { 
+			// existingEmployee.setEmpCode(employeeUpdateForm.getEmpCode()); 
+			Long codeCount = entityManager.createQuery("SELECT COUNT(e) FROM AddEmployee e WHERE e.empCode = :newCode", Long.class)
+									.setParameter("newCode", employeeUpdateForm.getNewEmpCode())
+									.getSingleResult(); 
+			
+			if(codeCount > 0) { 
+				throw new IllegalArgumentException("New employee code : '" + employeeUpdateForm.getNewEmpCode() + "' is already in use."); 			
+			} 
+			existingEmployee.setEmpCode(employeeUpdateForm.getNewEmpCode()); 
+		} 
+		
+		entityManager.merge(existingEmployee); 
+		
+	} 
+		
 	// Delete employee by manager 
 	
 	@Transactional 

@@ -146,6 +146,14 @@ public class AddEmployeeController {
 	} 
 	
 	
+	// Edit employee by manager 
+	@GetMapping("/edit-information/{empCode}") 
+	public String editEmployeeForm(@PathVariable String empCode, Model model) { 
+		AddEmployee employee = addEmployeeService.getEmployeeByCode(empCode); 
+		model.addAttribute("employee", employee); 
+		return "Meditemployee"; 
+	} 
+	
 	// Delete employee by manager 
 		
 	@DeleteMapping("/delete-employee/{empCode}") 

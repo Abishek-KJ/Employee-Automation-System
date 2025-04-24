@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -12,6 +13,8 @@ import com.example.eas.entity.AddEmployee;
 import com.example.eas.service.AddEmployeeService;
 import com.example.eas.service.UpdateEmployeeService;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpSession;
 
 @Controller 
@@ -20,14 +23,16 @@ public class UpdateEmployeeController {
 	
 	private final UpdateEmployeeService updateEmployeeService; 
 	private final AddEmployeeService addEmployeeService; 
+	private final EntityManager entityManager; 
 
 	
-	public UpdateEmployeeController(UpdateEmployeeService updateEmployeeService, AddEmployeeService addEmployeeService) { 
+	public UpdateEmployeeController(UpdateEmployeeService updateEmployeeService, AddEmployeeService addEmployeeService, EntityManager entityManager) { 
 		this.updateEmployeeService = updateEmployeeService; 
 		this.addEmployeeService = addEmployeeService; 
+		this.entityManager = entityManager; 
 	} 
 	
-	
+	// Update by employee 
 	
 	@GetMapping("/update-information") 
 	public String showUpdateForm(HttpSession session, Model model) { 
@@ -64,4 +69,21 @@ public class UpdateEmployeeController {
 		return "redirect:/employees/profile";  
 	} 
 	
+	// Update employee details by manager 
+	
+	@GetMapping("/update-form/{empCode}") 
+	public String showUpdateForm(@PathVariable String empCode, Model model) { 
+		AddEmployee employee = addEmployeeService.getEmployeeByCode(empCode); 
+		if(employee == null) { 
+			throw new EntityNotFoundException("Employee not found"); 
+		} 
+		model.addAttribute("employee", employee); 
+		return "Meditemployee"; 
+	} 
+	
+	@PostMapping("/update-employee-by-manager") 
+	public String updateEmployee(@ModelAttribute EmployeeUpdateForm employeeUpdateForm) { 
+		addEmployeeService.updateEmployeeByManager(employeeUpdateForm); 
+		return "redirect:/employees/list";  
+	} 
 } 

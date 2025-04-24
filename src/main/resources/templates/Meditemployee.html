@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<link rel = "icon" href = "https://static.vecteezy.com/system/resources/previews/053/536/393/non_2x/attended-rpa-multi-color-concept-icon-bots-helping-employees-to-do-tasks-routine-processes-automation-round-shape-line-illustration-abstract-idea-graphic-design-easy-to-use-in-presentation-vector.jpg" type = "image/png"> 
+    <title>Update Employee</title> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .form-container {
+            width: 800px;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px; 
+			margin-left: 250px; 
+        } 
+        h3 {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .form-group {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .form-group div {
+            width: 48%;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        textarea {
+            resize: vertical;
+            height: 50px;
+        }
+        .btn-submit {
+            width: 100%;
+            background: #007BFF;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        .btn-submit:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body> 
+	<div th:replace="~{fragments/managerpage :: sidebar}"></div> 
+    <div class="form-container">
+        <h3>Update employee information</h3>
+        <form th:action = "@{/employees/update-employee-by-manager}" th:object = "${employee}" method = "post"> 
+            <div class="form-group">
+                <div>
+                    <label>Employee Code</label>
+                    <input type="text" th:value = "${employee.empCode}" th:field = "*{empCode}"> 
+                </div>
+                <div>
+                    <label>Name</label>
+                    <input type="text" th:value = "${employee.empName}" th:field = "*{empName}"> 
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div>
+                    <label>Job Role</label>
+                    <input type="text" th:value = "${employee.jobRole}" th:field = "*{jobRole}"> 
+                </div>
+                <div>
+                    <label>Join Date</label>
+                    <input type="date" th:value = "${employee.joinDate}" th:field = "*{joinDate}"> 
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div>
+                    <label>Mail ID</label>
+                    <input type="email" th:value = "${employee.mailId}" th:field = "*{mailId}" disabled>
+                </div>
+                <div>
+                    <label>Password</label>
+                    <input type="password" th:value = "${employee.password}" disabled> 
+                </div>
+            </div>
+
+            <label>Address</label>
+           <!-- <textarea th:value = "${employee.address}" required></textarea> --> 
+		   <input type="text" th:value = "${employee.address}" th:field = "*{address}" disabled> 
+
+            <div class="form-group">
+                <div>
+                    <label>City</label>
+                    <input type="text" th:value = "${employee.city}" th:field = "*{city}" disabled> 
+                </div>
+                <div>
+                    <label>Country</label>
+                    <input type="text" th:value = "${employee.country}" th:field = "*{country}" disabled> 
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div>
+                    <label>Gender</label> 
+					<!-- <input type="text" th:value = "${employee.gender}" required readonly> --> 
+                    <select th:field = "*{gender}" disabled> 
+                        <option value="">Select Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select> 
+                </div>
+                <div>
+                    <label>Birthdate</label>
+                    <input type="date" th:field = "*{dob}" disabled> 
+                </div>
+            </div>
+
+            <label>Mobile Number</label>
+            <input type="tel" th:field = "*{mobile}" disabled> 
+
+            <button type="submit" class="btn-submit" onclick="alert('Employee Information Updated Successfully!')">Update Information</button>
+        </form>
+    </div> 
+	<footer>
+		<div th:replace="~{fragments/footer :: footer}"></div>  
+	</footer> 
+	<!-- <script>
+		document.getElementById("addEmployeeForm").onsubmit = function(){ 
+			setTimeout(() => document.getElementById("addEmployeeForm").reset(), 2000); 
+			}; 
+	</script> --> 
+</body> 
+
+</html>

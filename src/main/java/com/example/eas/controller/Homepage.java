@@ -109,6 +109,11 @@ public class Homepage {
 	@GetMapping("/Mmanageemployee") 
 	public String mManageEmployee() { 
 		return "Mmanageemployee"; 
+	}  
+	
+	@GetMapping("/Meditempinformation") 
+	public String mEditEmpInformation() { 
+		return "Meditempinformation"; 
 	} 
 	
 } 
