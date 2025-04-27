@@ -128,7 +128,19 @@
             </div>
 
             <label>Mobile Number</label>
-            <input type="tel" th:field="*{mobile}" required>
+            <input type="tel" th:field="*{mobile}" required> 
+			
+			<div class="form-group">
+			    <div>
+			        <label>Previous Experience (In Months)</label> 
+			        <input type="text" th:field="*{previousExperience}" maxlength = 3 required> 
+			    </div>
+			    <div>
+			        <label>Cost To Company (CTC) (In LPA)</label> 
+			        <input type="number" step = "0.1" th:field="*{ctc}" maxlength = 3 required> 
+			    </div>
+			</div>
+
 
             <button type="submit" class="btn-submit" onclick="alert('Employee Added Successfully!')">Register</button>
         </form>

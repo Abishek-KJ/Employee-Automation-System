@@ -1,5 +1,6 @@
 package com.example.eas.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,9 @@ public class AddEmployeeService {
 		
 	// } 
 	@Transactional
-	public void saveUser(AddEmployee addEmployee) { 
+	public void saveUser(AddEmployee addEmployee) {  
+		BigDecimal convertedCtc = addEmployee.getCtc().multiply(BigDecimal.valueOf(100000)); 
+		addEmployee.setCtc(convertedCtc); 
 		addEmployeeDAO.saveEmployee(addEmployee); 
 	} 
 	

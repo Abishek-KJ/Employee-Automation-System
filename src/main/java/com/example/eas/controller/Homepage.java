@@ -116,4 +116,20 @@ public class Homepage {
 		return "Meditempinformation"; 
 	} 
 	
+	// Administrator Login Webpages 
+	
+	@GetMapping("/aPage") 
+	public String  aPage() { 
+		return "/aPage"; 
+	} 
+	
+	@GetMapping("/Asalary") 
+	public String aSalary() { 
+		return "/aSalary"; 
+	} 
+	
+	@GetMapping("/Adirectdeposit") 
+	public String aDirectDeposit() { 
+		return "/Adirectdeposit"; 
+	} 
 } 

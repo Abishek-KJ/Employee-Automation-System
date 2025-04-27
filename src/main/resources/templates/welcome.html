@@ -479,8 +479,13 @@
 
     <div class="main-container">
         <div class="sidebar">
-            <h2>Welcome</h2>
-            <h3>Manager Login</h3>
+            <h2>Welcome</h2> 
+			
+			<h3>Administrator Login</h3>
+			<a href="#" onclick="loadPage('admin-signin')">Sign In</a>
+			            
+            
+			<h3>Manager Login</h3>
             <a href="#" onclick="loadPage('manager-signin')">Sign In</a>
             <a href="#" onclick="loadPage('manager-signup')">Sign Up</a>
 
@@ -543,7 +548,18 @@
                         <button type="submit">Sign Up</button>
                     </form>
                 `;
-            }
+            } 
+			else if(page === 'admin-signin') { 
+				content.innerHTML = `
+				    <h2>Administrator Sign In</h2> 
+				    <form action = "" method = "post"> 
+				    <input type="email" placeholder="johndoe@gmail.com" required><br>
+				    <input type="password" placeholder="Password" required><br>
+				    <a href = "/aPage"><button type="submit">Sign In</button></a> 
+				    <a href="/aPage"><button type="submit" id="forgot">Forgot Password?</button></a>
+				    </form>
+				 `;
+			}
         }
     </script>
 </body>

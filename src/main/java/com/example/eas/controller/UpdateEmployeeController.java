@@ -42,16 +42,16 @@ public class UpdateEmployeeController {
 			AddEmployee employee = addEmployeeService.getEmployeeByCode(employeeCode); 
 			
 			EmployeeUpdateForm form = new EmployeeUpdateForm(); 
-			
-			form.setAddress(employee.getAddress()); 
-			form.setCity(employee.getCity()); 
-			form.setCountry(employee.getCountry()); 
-			form.setGender(employee.getGender()); 
-			form.setDob(employee.getDob());  
-			System.out.println(employee.getDob()); 
-			form.setMobile(employee.getMobile()); 
-			
-			model.addAttribute("employee", employee); 
+				form.setAddress(employee.getAddress()); 
+				form.setCity(employee.getCity()); 
+				form.setCountry(employee.getCountry()); 
+				form.setGender(employee.getGender()); 
+				form.setDob(employee.getDob());  
+				System.out.println(employee.getDob()); 
+				form.setMobile(employee.getMobile()); 
+				
+				model.addAttribute("employee", employee); 
+				// return "Eupdateinformation"; 
 
 		} 
 		
@@ -61,7 +61,7 @@ public class UpdateEmployeeController {
 	
 	
 	@PostMapping("/update-information") 
-	public String updateEmployeeInformation(@ModelAttribute EmployeeUpdateForm form, HttpSession session) { 
+	public String updateEmployeeInformation(@ModelAttribute EmployeeUpdateForm form, HttpSession session, Model model) { 
 		String employeeCode = (String) session.getAttribute("employeeCode"); 
 		if(employeeCode != null) { 
 			updateEmployeeService.updateInformation(employeeCode, form); 

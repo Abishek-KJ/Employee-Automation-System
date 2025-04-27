@@ -39,7 +39,11 @@ public class AddEmployeeDto {
 	private LocalDate dob; 
 
 	
-	private String mobile;
+	private String mobile;  
+	
+	private short previousExperience; 
+	
+	private double ctc; 
 
 
 	public String getEmpCode() {
@@ -160,7 +164,26 @@ public class AddEmployeeDto {
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
 	} 
-	
+
+	public short getPreviousExperience() {
+		return previousExperience;
+	}
+
+
+	public void setPreviousExperience(short previousExperience) {
+		this.previousExperience = previousExperience;
+	}
+
+
+	public double getCtc() {
+		return ctc;
+	}
+
+
+	public void setCtc(double ctc) {
+		this.ctc = ctc;
+	}
+
 
 	public AddEmployeeDto() {
 		// super();
@@ -169,7 +192,7 @@ public class AddEmployeeDto {
 
 
 	public AddEmployeeDto(String empCode, String empName, String jobRole, LocalDate joinDate, String mailId,
-			String password, String address, String city, String country, String gender, LocalDate dob, String mobile) {
+			String password, String address, String city, String country, String gender, LocalDate dob, String mobile, short previousExperience, double ctc) {
 		// super();
 		this.empCode = empCode;
 		this.empName = empName;
@@ -182,7 +205,9 @@ public class AddEmployeeDto {
 		this.country = country;
 		this.gender = gender;
 		this.dob = dob;
-		this.mobile = mobile;
+		this.mobile = mobile; 
+		this.previousExperience = previousExperience; 
+		this.ctc = ctc; 
 	}
 
 	 

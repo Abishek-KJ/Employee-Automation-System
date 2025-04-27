@@ -1,5 +1,6 @@
 package com.example.eas.entity;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
 
@@ -56,9 +57,14 @@ public class AddEmployee {
 	private LocalDate dob; 
 
 	@Column(name = "mobile") 
-	private String mobile;
-	 
+	private String mobile; 
 	
+	@Column(name = "previous_experience") 
+	private int previousExperience; 
+	
+	@Column(name = "ctc") 
+	private BigDecimal ctc; 
+	 
 	public int getId() {
 		return id;
 	}
@@ -163,12 +169,29 @@ public class AddEmployee {
 		this.mobile = mobile;
 	} 
 	
+	public int getPreviousExperience() { 
+		return previousExperience;
+	}
+
+	public void setPreviousExperience(int previousExperience) { 
+		this.previousExperience = previousExperience;
+	}
+
+	public BigDecimal getCtc() { 
+		return ctc;
+	}
+
+	public void setCtc(BigDecimal ctc) { 
+		this.ctc = ctc;
+	}
+
+	
 	public AddEmployee() { 
 		
 	}
 
 	public AddEmployee(int id, String empCode, String empName, String jobRole, LocalDate joinDate, String mailId,
-			String password, String address, String city, String country, String gender, LocalDate dob, String mobile) {
+			String password, String address, String city, String country, String gender, LocalDate dob, String mobile, short previousExperience, BigDecimal ctc) { 
 		// super();
 		this.id = id;
 		this.empCode = empCode;
@@ -182,7 +205,9 @@ public class AddEmployee {
 		this.country = country;
 		this.gender = gender;
 		this.dob = dob;
-		this.mobile = mobile;
+		this.mobile = mobile; 
+		this.previousExperience = previousExperience; 
+		this.ctc = ctc; 
 	}
 
 	@Override
@@ -190,7 +215,7 @@ public class AddEmployee {
 		return "AddEmployee [id=" + id + ", empCode=" + empCode + ", empName=" + empName + ", jobRole=" + jobRole
 				+ ", joinDate=" + joinDate + ", mailId=" + mailId + ", password=" + password + ", address=" + address
 				+ ", city=" + city + ", country=" + country + ", gender=" + gender + ", dob=" + dob + ", mobile="
-				+ mobile + "]";
+				+ mobile + "previousExperience= " + previousExperience + "ctc=" + ctc + "]";
 	} 
 	
 }  

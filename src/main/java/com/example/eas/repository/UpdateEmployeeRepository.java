@@ -6,6 +6,8 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
+import com.example.eas.exception.MobileNumberAlreadyExistsException;
+
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
@@ -18,8 +20,33 @@ public class UpdateEmployeeRepository {
 	@PersistenceContext 
 	private EntityManager entityManager; 
 	
+	 public boolean isMobileNumberExists(String mobile, String employeeCode) {
+	        String queryStr = "SELECT COUNT(e) FROM AddEmployee e WHERE e.mobile = :mobile AND e.empCode != :employeeCode";
+	        Query query = entityManager.createQuery(queryStr);
+	        query.setParameter("mobile", mobile);
+	        query.setParameter("employeeCode", employeeCode);
+
+	        Long count = (Long) query.getSingleResult();
+	        return count > 0;
+	    }
+
+	
+	// Update employee by themself 
 	@Transactional 
 	public void updateEmployeeInformation(String employeeCode, String address, String city, String country, String gender, LocalDate dob, String mobile) {  
+		
+		// 1.Check if the mobile number already exists or not exists 
+		if(mobile != null && !mobile.isEmpty()) { 
+			String mobileQuery = "SELECT COUNT(e) FROM AddEmployee e WHERE e.mobile = :mobile AND e.empCode = :empCode"; 
+			Query queryCheck = entityManager.createQuery(mobileQuery); 
+			queryCheck.setParameter("mobile", mobile); 
+			queryCheck.setParameter("empCode", employeeCode); 
+			Long count = (Long) queryCheck.getSingleResult(); 
+			
+			if(count > 1) { 
+				throw new MobileNumberAlreadyExistsException("Mobile number already exists, please enter different mobile number"); 
+			} 
+		} 
 		
 		StringBuilder query = new StringBuilder("UPDATE AddEmployee e SET "); 
 		Map<String, Object> parameters = new HashMap<>(); 

@@ -63,7 +63,10 @@
 <body> 
 	<div th:replace="~{fragments/employeepage :: sidebar}"></div> 
     <div class="form-container">
-        <h3>Update employee information</h3>
+        <h3>Update employee information</h3> 
+		<div th:if="${errorMessage}" style = "color:red;"> 
+			<p th:text = "${errorMessage}"></p>
+		</div>  
         <form th:action = "@{/employees/update-information}" th:object = "${employee}" method = "post"> 
             <div class="form-group">
                 <div>
