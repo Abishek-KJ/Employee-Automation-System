@@ -38,8 +38,9 @@ public class SalaryComponentsController {
 		
 		salaryComponents.setSalaryDate(LocalDate.now()); 
 		salaryComponentsService.saveSalaryComponents(salaryComponents); 
-		return "Adirectdeposit"; 
+		return "Aselectbank"; 
 		
 	} 
 	
 } 
+

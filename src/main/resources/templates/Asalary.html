@@ -108,7 +108,7 @@
 
 		  <script>
 		      document.getElementById('salaryForm').addEventListener('submit', function(event) {
-		          // event.preventDefault(); // Prevent form submission initially 
+		          event.preventDefault(); // Prevent default submission initially
 
 		          const fields = [
 		              { id: 'basic', label: 'Basic Salary' },
@@ -116,8 +116,7 @@
 		              { id: 'conveyance', label: 'Conveyance Allowance' },
 		              { id: 'medical', label: 'Medical Allowance' },
 		              { id: 'special', label: 'Special Allowance' },
-		              { id: 'pf', label: 'Provident Fund (PF) Contribution' },
-		              // { id: 'pt', label: 'Professional Tax' }
+		              { id: 'pf', label: 'Provident Fund (PF) Contribution' }
 		          ];
 
 		          for (let field of fields) {
@@ -128,27 +127,54 @@
 		                  Swal.fire({
 		                      icon: 'error',
 		                      title: 'Invalid Input',
-		                      text: `${field.label} must be between 0 and 100.`, 
-							  timer: 2000, 
-							  showConfimButton: false, 
+		                      text: `${field.label} must be between 0 and 100.`,
+		                      timer: 2000,
+		                      showConfirmButton: false
 		                  });
-		                  return; // Stop checking after first error
+		                  return; // Stop validation and do not submit
 		              }
 		          }
 
-		          // If all inputs are valid
+		          // All inputs are valid
 		          Swal.fire({
 		              icon: 'success',
 		              title: 'Success',
-		              text: 'All salary components are valid!', 
-					  timer: 1000, 
-					  showConfimButton: false, 
-		              confirmButtonColor: '#007bff' 
-		          }).then(() => { 
-						this.submit(); 
-				  }); 
+		              text: 'All salary components are valid!',
+		              timer: 1000,
+		              showConfirmButton: false
+		          }).then(() => {
+		              // Submit the form manually
+		              document.getElementById('salaryForm').submit();
+
+		              // Call export API after delay
+		              setTimeout(() => {
+		                  fetch("http://localhost:8080/export/salary", {
+		                      method: "GET"
+		                  })
+		                  .then(response => {
+		                      if (!response.ok) throw new Error("Export failed");
+		                      return response.blob();
+		                  })
+		                  .then(blob => {
+		                      const url = window.URL.createObjectURL(blob);
+		                      const a = document.createElement("a");
+		                      a.href = url;
+		                      a.download = "salary_export.xlsx";
+		                      document.body.appendChild(a);
+		                      a.click();
+		                      a.remove();
+		                  })
+		                  .catch(error => {
+		                      Swal.fire({
+		                          icon: 'error',
+		                          title: 'Export Failed',
+		                          text: error.message
+		                      });
+		                  });
+		              }, 1000); // delay to ensure form submission finishes
+		          });
 		      });
-		  </script>		
+		  </script>
 		<footer>
 		   <div th:replace="~{fragments/footer :: footer}"></div>  
 		</footer> 

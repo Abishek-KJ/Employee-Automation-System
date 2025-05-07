@@ -1,4 +1,4 @@
-package com.example.eas.controller;
+package com.example.eas.controller; 
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -131,5 +131,15 @@ public class Homepage {
 	@GetMapping("/Adirectdeposit") 
 	public String aDirectDeposit() { 
 		return "/Adirectdeposit"; 
+	}  
+	
+	@GetMapping("/AdirectdepositHDFC") 
+	public String aDirectDepositHDFC() { 
+		return "/AdirectdepositHDFC"; 
+	} 
+	
+	@GetMapping("/AdirectdepositIDFC") 
+	public String aDirectDepositIDFC() { 
+		return "/AdirectdepositIDFC"; 
 	} 
 } 
