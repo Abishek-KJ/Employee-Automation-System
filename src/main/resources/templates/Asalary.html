@@ -107,7 +107,7 @@
 		  </div>
 
 		  <script>
-		      document.getElementById('salaryForm').addEventListener('submit', function(event) {
+		     /*  document.getElementById('salaryForm').addEventListener('submit', function(event) {
 		          event.preventDefault(); // Prevent default submission initially
 
 		          const fields = [
@@ -173,7 +173,93 @@
 		                  });
 		              }, 1000); // delay to ensure form submission finishes
 		          });
-		      });
+		      }); */ 
+			  
+			  document.getElementById('salaryForm').addEventListener('submit', function(event) {
+			        event.preventDefault(); // Prevent default form submission
+
+			        const fields = [
+			            { id: 'basic', label: 'Basic Salary' },
+			            { id: 'hra', label: 'House Rent Allowance (HRA)' },
+			            { id: 'conveyance', label: 'Conveyance Allowance' },
+			            { id: 'medical', label: 'Medical Allowance' },
+			            { id: 'special', label: 'Special Allowance' },
+			            { id: 'pf', label: 'Provident Fund (PF) Contribution' }
+			        ];
+
+			        for (let field of fields) {
+			            const input = document.getElementById(field.id);
+			            const value = parseInt(input.value);
+
+			            if (isNaN(value) || value < 0 || value > 100) {
+			                Swal.fire({
+			                    icon: 'error',
+			                    title: 'Invalid Input',
+			                    text: `${field.label} must be between 0 and 100.`,
+			                    timer: 2000,
+			                    showConfirmButton: false
+			                });
+			                return;
+			            }
+			        }
+
+			        // Show success, then proceed
+			        Swal.fire({
+			            icon: 'success',
+			            title: 'Success',
+			            text: 'All salary components are valid!',
+			            timer: 1000,
+			            showConfirmButton: false
+			        }).then(() => {
+			            // 1. Submit the form using AJAX (fetch to your backend)
+			            const formData = new FormData(document.getElementById('salaryForm'));
+
+			            fetch('http://localhost:8080/create-salary/components', {
+			                method: 'POST',
+			                body: formData
+			            })
+			            .then(response => {
+			                if (!response.ok) throw new Error("Form submission failed");
+			                return response.text(); // or .json() if your API returns JSON
+			            })
+			            .then(() => {
+			                // 2. THEN call the export API
+			                return fetch("http://localhost:8080/export/salary");
+			            })
+			            .then(response => {
+			                if (!response.ok) throw new Error("Exported excel sheet is already open, please close and generate another excel sheet.");
+			                return response.blob();
+			            })
+						.then(() => { 
+							// Redirect the browser to Aselectbank
+							   window.location.href = "http://localhost:8080/Aselectbank";
+						}) 
+			            .then(blob => {
+			                // const url = window.URL.createObjectURL(blob);
+			                // const a = document.createElement("a");
+			                // a.href = url;
+			                // a.download = "salary_export.xlsx";
+			                // document.body.appendChild(a);
+			                // a.click();
+			                // a.remove();
+							return fetch("http://localhost:8080/Aselectbank"); 
+			            })
+						.then(response => {
+						    if (!response.ok) throw new Error("Bank selection failed");
+						    return response.text(); // or .json()
+						})
+						.then(data => {
+						     console.log("Bank selection API response:", data);
+						 })
+			            .catch(error => {
+			                Swal.fire({
+			                    icon: 'error',
+			                    title: 'Error',
+			                    text: error.message
+			                });
+			            });
+			        });
+			    });
 		  </script>
 		<footer>
 		   <div th:replace="~{fragments/footer :: footer}"></div>  
@@ -181,4 +267,6 @@
 		
 	</body>
 </html> 
+
+
 

@@ -21,8 +21,10 @@ public class ExcelExportController {
 	} 
 	
 	@GetMapping("/salary")
-	public void exportSalaryToExcel(HttpServletResponse response) throws IOException { 
+	public String exportSalaryToExcel(HttpServletResponse response) throws IOException { 
+		System.out.println("Inside the exportSalaryToExcel(HttpServletResponse response) method."); 
 		excelExportService.exportEmployeeSalaryToExcel(); 
+		return "Aselectbank"; 
 	} 
 
 } 

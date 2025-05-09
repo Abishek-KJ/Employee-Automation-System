@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.example.eas.entity.BankDetails;
 import com.example.eas.entity.ManagerSignup;
 
 import jakarta.servlet.http.HttpSession;
@@ -74,6 +75,12 @@ public class Homepage {
 		return "Eprofile"; 
 	} 
 	
+	@GetMapping("/Epayroll") 
+	public String ePayroll() { 
+		return "Epayroll"; 
+	} 
+
+	
 	//Manager Login Webpages 
 	
 	@GetMapping("/mDashboard") 
@@ -128,18 +135,27 @@ public class Homepage {
 		return "/aSalary"; 
 	} 
 	
+	@GetMapping("/Aselectbank") 
+	public String aSelectBank() { 
+		return "/Aselectbank"; 
+	} 
+	
+	
 	@GetMapping("/Adirectdeposit") 
-	public String aDirectDeposit() { 
-		return "/Adirectdeposit"; 
+	public String aDirectDeposit(Model model) { 
+	    model.addAttribute("bankDetails", new BankDetails());
+		return "Adirectdeposit"; 
 	}  
 	
 	@GetMapping("/AdirectdepositHDFC") 
-	public String aDirectDepositHDFC() { 
-		return "/AdirectdepositHDFC"; 
+	public String aDirectDepositHDFC(Model model) { 
+		model.addAttribute("bankDetails", new BankDetails());
+		return "AdirectdepositHDFC"; 
 	} 
 	
 	@GetMapping("/AdirectdepositIDFC") 
-	public String aDirectDepositIDFC() { 
-		return "/AdirectdepositIDFC"; 
+	public String aDirectDepositIDFC(Model model) { 
+		model.addAttribute("bankDetails", new BankDetails());
+		return "AdirectdepositIDFC"; 
 	} 
 } 

@@ -1,0 +1,123 @@
+<!DOCTYPE html> 
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Download Payroll Slip</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f9fc;
+        }
+
+        .container {
+            max-width: 500px;
+            background: white;
+            margin: auto;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 12px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #003366;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            margin-top: 25px;
+            width: 100%;
+            padding: 12px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0055aa;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="~{fragments/employeepage :: sidebar}"></div> 
+<div class="container">
+    <h2>Download Payroll Slip</h2>
+
+    <form id="downloadForm">
+        <label for="month">Select Month</label>
+        <select id="month" name="month" required>
+            <option value="">--Select Month--</option>
+            <option value="01">January</option>
+            <option value="02">February</option>
+            <option value="03">March</option>
+            <option value="04">April</option>
+            <option value="05">May</option>
+            <option value="06">June</option>
+            <option value="07">July</option>
+            <option value="08">August</option>
+            <option value="09">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+        </select>
+
+        <label for="year">Select Year</label>
+        <select id="year" name="year" required></select>
+
+        <button type="submit">Download Slip</button>
+    </form>
+</div>
+
+<script>
+    // Populate year dropdown (current year to 10 years back)
+    const yearSelect = document.getElementById("year");
+    const currentYear = new Date().getFullYear();
+    for (let y = currentYear; y >= currentYear - 10; y--) {
+        let option = document.createElement("option");
+        option.value = y;
+        option.text = y;
+        yearSelect.appendChild(option);
+    }
+
+    // Handle form submit
+    document.getElementById("downloadForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        const month = document.getElementById("month").value;
+        const year = document.getElementById("year").value;
+
+        if (!month || !year) {
+            alert("Please select both month and year.");
+            return;
+        }
+
+        // Redirect to download API
+        const url = `/export/salary?month=${month}&year=${year}`;
+        window.location.href = url;
+    });
+</script>
+<footer>
+	<div th:replace="~{fragments/footer :: footer}"></div>  
+</footer>
+
+</body>
+</html>

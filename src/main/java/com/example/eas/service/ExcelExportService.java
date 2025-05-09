@@ -28,7 +28,7 @@ public class ExcelExportService {
 		this.salaryComponentsService = salaryComponentsService; 
 	} 
 	
-    public void exportEmployeeSalaryToExcel() throws IOException { 
+    public void  exportEmployeeSalaryToExcel() throws IOException { 
 		
 		SalaryComponents salaryComponents = salaryComponentsService.getSalaryComponentsForCurrentMonth(); 
 		

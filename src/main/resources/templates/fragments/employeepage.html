@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="sidebar">
 <head>
     <meta charset="UTF-8">
@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
-            margin: 0;
+            margin: 0; 
             font-family: Arial, sans-serif;
             font-size: 12px;
             display: flex;
@@ -139,7 +139,11 @@
                 <a href = "/employees/dashboard" onclick="toggleSubmenu('dashboard')"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
             </div>
             <div class="navbar-item">
-                <a href = "/employees/profile" onclick="toggleSubmenu('department')"><i class="fas fa-user"></i> My Profile</a>
+				<a onclick="toggleSubmenu('profileManagement')"><i class="fa-solid fa-id-card"></i>Profile Management<i class="fas fa-chevron-down toggle-icon"></i></a>
+				<div class="submenu" id="profileManagement">   
+                	<a href = "/employees/profile"><i class="fas fa-user"></i> My Profile</a>
+					<a href = "/Epayroll"><i class="fa-solid fa-money-check"></i> Payroll</a>
+				</div>
             </div>
             <div class="navbar-item">
                 <a onclick="toggleSubmenu('leaveType')"><i class="fas fa-calendar-check"></i>  Leave Management <i class="fas fa-chevron-down toggle-icon"></i></a>

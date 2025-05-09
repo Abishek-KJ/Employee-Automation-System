@@ -1,0 +1,261 @@
+<!DOCTYPE html> 
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank Integration - Direct Deposit</title>
+
+    <style>
+        /* Navbar Styling */
+        .navbar {
+            background-color: #003366;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            align-items: center;
+        }
+        .navbar img {
+            height: 40px;
+            margin-right: 15px;
+        }
+        .navbar h1 {
+            font-size: 20px;
+            margin: 0;
+            font-weight: normal;
+        }
+
+        .container { 
+            width: 90%; 
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 30px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .container h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #003366;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .custom-select-wrapper {
+            position: relative;
+            user-select: none;
+            margin-bottom: 20px;
+        }
+
+        .custom-select-trigger {
+            display: flex;
+            align-items: center;
+            justify-content: start;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            background: white;
+        }
+
+        .custom-select-trigger img {
+            height: 20px;
+            margin-right: 10px;
+        }
+
+        .custom-options {
+            display: none;
+            position: absolute;
+            width: 100%;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 10;
+        }
+
+        .custom-option {
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .custom-option img {
+            height: 20px;
+            margin-right: 10px;
+        }
+
+        .custom-option:hover {
+            background-color: #f0f0f0;
+        } 
+
+        input[type="text"], input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .buttons button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            background-color: #003366;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .buttons button:hover {
+            background-color: #0055aa;
+        }
+
+        @media (min-width: 1024px) {
+            .container {
+                max-width: 1100px; 
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Reusable Navbar -->
+    <div class="navbar">
+        <img th:src="@{/images/Bank.jpg}" alt="Bank Logo">
+        <h1>Direct Deposit</h1>
+    </div>
+
+    <!-- Page Content -->
+    <div class="container">
+        <h2>Bank Account Integration</h2>
+        <form id="bankForm" th:action="@{/submit-form}" method="post" enctype="multipart/form-data">
+            <label for="cibLoginId">CIB Portal Login ID</label>
+            <input type="text" th:field="*{cibLoginId}" id="cibLoginId" placeholder="icici_cib_login_001" required>
+
+            <label for="corporationId">Corporation ID</label>
+            <input type="text" th:field="*{corporationId}" id="corporationId" placeholder="icici_corp_123456" required>
+
+            <label for="userId">User ID</label>
+            <input type="text" th:field="*{userId}" id="userId" placeholder="icici_user_789" required> 
+
+            <label for="excelFile">Upload Bank Excel (.xlsx only)</label>
+            <input type="file" th:field="*{excelFile}" id="excelFile" accept=".xlsx" required>
+
+            <!-- Bank Name Dropdown with Logo -->
+            <label for="bankName">Select Bank</label>
+            <div class="custom-select-wrapper">
+                <div class="custom-select-trigger" id="selectedBank">
+                    <img th:src="@{/images/Bank.jpg}" alt="bank" id="selectedBankLogo">
+                    <span>Select Bank</span>
+                </div>
+                <div class="custom-options">
+                    <div class="custom-option" data-value="ICICI Bank" data-logo="/images/ICICI.jpg">
+                        <img th:src="@{/images/ICICI.jpg}" alt="ICICI"> ICICI Bank
+                    </div>
+                    <div class="custom-option" data-value="HDFC Bank" data-logo="/images/HDFC%20Bank.jpg">
+                        <img th:src="@{/images/HDFC Bank.jpg}" alt="HDFC"> HDFC Bank
+                    </div>
+                    <div class="custom-option" data-value="IDFC Bank" data-logo="/images/IDFC%20Bank.jpg">
+                        <img th:src="@{/images/IDFC Bank.jpg}" alt="IDFC"> IDFC Bank
+                    </div>
+                    <div class="custom-option" data-value="SBI Bank" data-logo="/images/SBI%20Bank.jpg">
+                        <img th:src="@{/images/SBI Bank.jpg}" alt="SBI"> SBI Bank
+                    </div>
+                    <div class="custom-option" data-value="AXIS Bank" data-logo="/images/Axis%20Bank.jpg">
+                        <img th:src="@{/images/Axis Bank.jpg}" alt="Axis"> Axis Bank
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" th:field="*{bankName}" id="bankName" readonly required>
+
+            <div class="buttons">
+                <button type="submit">Submit</button> 
+                <button type="button" onclick="cancelForm()">Cancel</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- SweetAlert2 Script -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        const trigger = document.getElementById('selectedBank');
+        const options = document.querySelector('.custom-options');
+        const hiddenInput = document.getElementById('bankName');
+        const logo = document.getElementById('selectedBankLogo');
+
+        trigger.addEventListener('click', () => {
+            options.style.display = options.style.display === 'block' ? 'none' : 'block';
+        });
+
+        document.querySelectorAll('.custom-option').forEach(option => {
+            option.addEventListener('click', () => {
+                const value = option.getAttribute('data-value');
+                const logoSrc = option.getAttribute('data-logo');
+                const label = option.textContent.trim();
+
+                hiddenInput.value = value;
+                trigger.querySelector('span').textContent = label;
+                logo.src = logoSrc;
+                options.style.display = 'none';
+            });
+        });
+
+        window.addEventListener('click', function (e) {
+            if (!e.target.closest('.custom-select-wrapper')) {
+                options.style.display = 'none';
+            }
+        });
+
+        document.getElementById("bankForm").addEventListener("submit", function(event) {
+            let isValid = true;
+
+            document.querySelectorAll("input").forEach(input => {
+                input.style.border = "1px solid #ccc";
+                if (input.type !== "hidden" && input.value.trim() === "") {
+                    isValid = false;
+                    input.style.border = "2px solid red";
+                }
+            });
+
+            if (!isValid) {
+                event.preventDefault();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validation Error',
+                    text: 'Please fill all required fields.',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            }
+        });
+
+        function cancelForm() {
+            document.getElementById("bankForm").reset();
+            document.getElementById("selectedBankLogo").src = "/images/Bank.jpg";
+            document.getElementById("selectedBank").querySelector('span').textContent = "Select Bank";
+        }
+    </script>
+
+    <footer>
+        <div th:replace="~{fragments/footer :: footer}"></div>  
+    </footer> 
+</body>
+</html>

@@ -1,171 +1,180 @@
 <!DOCTYPE html> 
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bank Integration - Direct Deposit</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Bank Integration - Direct Deposit</title>
 
-    <style>
-        /* Navbar Styling */
-        .navbar {
-            background-color: #003366;
-            color: white;
-            padding: 15px 30px;
-            display: flex;
-            align-items: center;
-        }
-        .navbar img {
-            height: 40px;
-            margin-right: 15px;
-        }
-        .navbar h1 {
-            font-size: 20px;
-            margin: 0;
-            font-weight: normal;
-        }
+	<style>
+		/* Navbar Styling */
+		.navbar {
+			background-color: #003366;
+			color: white;
+			padding: 15px 30px;
+			display: flex;
+			align-items: center;
+		}
 
-        /* Form Container */
-        .container { 
-			width: 90%; 
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 30px;
-            background: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-        }
+		.navbar img {
+			height: 40px;
+			margin-right: 15px;
+		}
 
-        .container h2 {
-            text-align: center;
-            margin-bottom: 25px;
-            color: #003366;
-        }
+		.navbar h1 {
+			font-size: 20px;
+			margin: 0;
+			font-weight: normal;
+		}
 
-        label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: bold;
-            color: #333;
-        }
+		/* Form Container */
+		.container {
+			width: 90%;
+			max-width: 900px;
+			margin: 40px auto;
+			padding: 30px;
+			background: white;
+			box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+			border-radius: 8px;
+		}
 
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 14px;
-        }
+		.container h2 {
+			text-align: center;
+			margin-bottom: 25px;
+			color: #003366;
+		}
 
-        .buttons {
-            text-align: center;
-            margin-top: 20px;
-        }
+		label {
+			display: block;
+			margin-bottom: 6px;
+			font-weight: bold;
+			color: #333;
+		}
 
-        .buttons button {
-            padding: 10px 20px;
-            margin: 0 10px;
-            background-color: #003366;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-        }
+		input[type="text"] {
+			width: 100%;
+			padding: 10px;
+			margin-bottom: 20px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			font-size: 14px;
+		}
 
-        .buttons button:hover {
-            background-color: #0055aa;
-        }
+		.buttons {
+			text-align: center;
+			margin-top: 20px;
+		}
 
-        /* Responsive Width for Laptop */
-        @media (min-width: 1024px) {
-            .container {
-                max-width: 1100px; 
-            }
-        }
-    </style>
+		.buttons button {
+			padding: 10px 20px;
+			margin: 0 10px;
+			background-color: #003366;
+			color: white;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+			font-size: 14px;
+		}
+
+		.buttons button:hover {
+			background-color: #0055aa;
+		}
+
+		/* Responsive Width for Laptop */
+		@media (min-width: 1024px) {
+			.container {
+				max-width: 1100px;
+			}
+		}
+	</style>
 
 </head>
+
 <body>
 
-    <!-- Reusable Navbar -->
-    <div class="navbar">
-        <img th:src = "@{/images/HDFC Bank.jpg}" alt="Bank Logo">
-        <h1>Direct Deposit</h1>
-    </div>
+	<!-- Reusable Navbar -->
+	<div class="navbar">
+		<img th:src="@{/images/HDFC Bank.jpg}" alt="Bank Logo">
+		<h1>Direct Deposit</h1>
+	</div>
 
-    <!-- Page Content -->
-    <div class="container">
-        <h2>Bank Account Integration</h2>
-        <form id="bankForm">
-            <label for="cibLoginId">CIB Portal Login ID</label>
-            <input type="text" id="cibLoginId" name="cibLoginId" required>
+	<!-- Page Content -->
+	<div class="container">
+		<h2>Bank Account Integration</h2>
+		<form th:action = "@{/submit-form}" th:object = "${bankDetails}" method = "post" enctype = "multipart/form-data">
+				<label for="cibLoginId">CIB Portal Login ID</label>
+				<input type="text" th:field="*{cibLoginId}" id="cibLoginId" name="cibLoginId" required>
 
-            <label for="corporationId">Corporation ID</label>
-            <input type="text" id="corporationId" name="corporationId" required>
+				<label for="corporationId">Corporation ID</label>
+				<input type="text" th:field="*{corporationId}" id="corporationId" name="corporationId" required>
 
-            <label for="userId">User ID</label>
-            <input type="text" id="userId" name="userId" required> 
-			
-			<label for="excelFile">Upload Bank Excel (.xlsx only)</label>
-			<input type="file" id="excelFile" name="excelFile" accept=".xlsx" required>
+				<label for="userId">User ID</label>
+				<input type="text" th:field="*{userId}" id="userId" name="userId" required>
 
-            <div class="buttons">
-                <button type="submit">Submit</button>
-                <button type="button" onclick="cancelForm()">Cancel</button>
-            </div>
-        </form>
-    </div>
+				<label for="excelFile">Upload Bank Excel (.xlsx only)</label>
+				<input type="file" th:field="*{excelFile}" id="excelFile" name="excelFile" accept=".xlsx" required>
 
-    <!-- SweetAlert2 Script -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+				<label for="selectBank">Select Bank</label>
+				<select th:field="*{bankName}">
+					<option value="HDFC Bank">HDFC Bank</option>
+				</select>
+				<div class="buttons">
+					<button type="submit" onclick = "alert('Successfully sent to bank')">Submit</button>
+					<button type="button" onclick="cancelForm()">Cancel</button>
+				</div>
+			</form>
+	</div>
+
+	<!-- SweetAlert2 Script -->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 	<script>
-	document.getElementById("bankForm").addEventListener("submit", function(event) {
-	    event.preventDefault(); // Stop normal form submit
+		document.getElementById("bankForm").addEventListener("submit", function (event) {
+			event.preventDefault(); // Stop normal form submit
 
-	    let isValid = true;
+			let isValid = true;
 
-	    // Remove previous error borders
-	    document.querySelectorAll("input").forEach(input => {
-	        input.style.border = "1px solid #ccc";
-	    });
+			// Remove previous error borders
+			document.querySelectorAll("input").forEach(input => {
+				input.style.border = "1px solid #ccc";
+			});
 
-	    // Check each input
-	    document.querySelectorAll("input").forEach(input => {
-	        if (input.value.trim() === "") {
-	            isValid = false;
-	            input.style.border = "2px solid red"; // Red border for error
-	        }
-	    });
+			// Check each input
+			document.querySelectorAll("input").forEach(input => {
+				if (input.value.trim() === "") {
+					isValid = false;
+					input.style.border = "2px solid red"; // Red border for error
+				}
+			});
 
-	    if (!isValid) {
-	        Swal.fire({
-	            icon: 'error',
-	            title: 'Validation Error',
-	            text: 'Please fill all required fields correctly.',
-	            timer: 2000,
-	            showConfirmButton: false
-	        });
-	        return; // Stop further action
-	    }
+			if (!isValid) {
+				Swal.fire({
+					icon: 'error',
+					title: 'Validation Error',
+					text: 'Please fill all required fields correctly.',
+					timer: 2000,
+					showConfirmButton: false
+				});
+				return; // Stop further action
+			}
 
-	    // If everything is OK
-	    Swal.fire({
-	        icon: 'success',
-	        title: 'Form Submitted Successfully!',
-	        timer: 2000,
-	        showConfirmButton: false
-	    });
+			// If everything is OK
+			Swal.fire({
+				icon: 'success',
+				title: 'Form Submitted Successfully!',
+				timer: 2000,
+				showConfirmButton: false
+			});
 
-	    // You can now call your API or submit the form via AJAX
-	});
+			// You can now call your API or submit the form via AJAX
+		});
 	</script>
 
 	<footer>
-		 <div th:replace="~{fragments/footer :: footer}"></div>  
-	</footer> 
+		<div th:replace="~{fragments/footer :: footer}"></div>
+	</footer>
 </body>
+
 </html>

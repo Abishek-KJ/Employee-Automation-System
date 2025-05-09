@@ -12,19 +12,15 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
 @Entity 
-@Table(name = "payroll_excel_uploads", uniqueConstraints = {
-		@UniqueConstraint(columnNames = {"month", "year"})
-})  
-public class PayrollExcelUpload {
-	
+@Table(name = "bank_integration") 
+public class BankIntegration {
 	
 	@Id 
 	@GeneratedValue(strategy = GenerationType.IDENTITY) 
-	
 	private Long id; 
 	
-	@Column(name = "cib_portal_login") 
-	private String cibPortalLogin; 
+	@Column(name = "cib_login_id") 
+	private String cibLoginId; 
 	
 	@Column(name = "corporation_id") 
 	private String corporationId; 
@@ -32,38 +28,33 @@ public class PayrollExcelUpload {
 	@Column(name = "user_id") 
 	private String userId; 
 	
+	@Column(name = "bank_name") 
+	private String bankName; 
+	
 	@Column(name = "file_name") 
 	private String fileName; 
-	
-	@Column(name = "month") 
-	private int month; 
-	
-	@Column(name = "year") 
-	private int year; 
-	
+		
 	@Column(name = "upload_date") 
 	private LocalDate uploadDate; 
 	
 	@Lob 
-	@Column(name = "excel_data", columnDefinition = "LONGLOB") 
-	private byte[] excelData; 
+	@Column(name = "excel_file", columnDefinition = "LONGBLOB") 
+	private byte[] excelFile; 
+	
 		
-	public PayrollExcelUpload() {
+	public BankIntegration() { 
 		// super();
 	}
 	
-	public PayrollExcelUpload(Long id, String cibPortalLogin, String corporationId, String userId, String fileName,
-			int month, int year, LocalDate uploadDate, byte[] excelData) { 
+	public BankIntegration(Long id, String cibLoginId, String corporationId, String userId, String fileName, LocalDate uploadDate, byte[] excelFile) { 
 		// super();
 		this.id = id;
-		this.cibPortalLogin = cibPortalLogin;
+		this.cibLoginId = cibLoginId; 
 		this.corporationId = corporationId;
 		this.userId = userId;
 		this.fileName = fileName;
-		this.month = month;
-		this.year = year;
 		this.uploadDate = uploadDate; 
-		this.excelData = excelData; 
+		this.excelFile = excelFile; 
 	}
 
 	public Long getId() {
@@ -74,12 +65,12 @@ public class PayrollExcelUpload {
 		this.id = id;
 	}
 
-	public String getCibPortalLogin() {
-		return cibPortalLogin;
+	public String getCibLoginId() {
+		return cibLoginId;
 	}
 
-	public void setCibPortalLogin(String cibPortalLogin) {
-		this.cibPortalLogin = cibPortalLogin;
+	public void setCibLoginId(String cibLoginId) {
+		this.cibLoginId = cibLoginId;
 	}
 
 	public String getCorporationId() {
@@ -98,28 +89,20 @@ public class PayrollExcelUpload {
 		this.userId = userId;
 	}
 
+	public String getBankName() {
+		return bankName;
+	}
+
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
+	}
+
 	public String getFileName() {
 		return fileName;
 	}
 
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
-	}
-
-	public int getMonth() {
-		return month;
-	}
-
-	public void setMonth(int month) {
-		this.month = month;
-	}
-
-	public int getYear() {
-		return year;
-	}
-
-	public void setYear(int year) {
-		this.year = year;
 	}
 
 	public LocalDate getUploadDate() {
@@ -130,12 +113,11 @@ public class PayrollExcelUpload {
 		this.uploadDate = uploadDate;
 	}
 
-	public byte[] getExcelData() {
-		return excelData;
+	public byte[] getExcelFile() {
+		return excelFile;
 	}
 
-	public void setExcelData(byte[] excelData) {
-		this.excelData = excelData;
-	} 
-	
+	public void setExcelFile(byte[] excelFile) {
+		this.excelFile = excelFile;
+	}	
 }
