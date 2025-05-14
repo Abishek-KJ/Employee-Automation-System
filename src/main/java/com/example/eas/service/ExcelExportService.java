@@ -69,12 +69,12 @@ public class ExcelExportService {
 		headerRow.createCell(6).setCellValue("Medical Allowance"); 
 		headerRow.createCell(7).setCellValue("Special Allowance"); 
 		headerRow.createCell(8).setCellValue("Provident Fund"); 
-		headerRow.createCell(9).setCellValue("Gross Salary");
+		headerRow.createCell(9).setCellValue("Gross Salary"); 
 		headerRow.createCell(10).setCellValue("Total Amount"); 
 		headerRow.createCell(11).setCellValue("LOP Days");
 		headerRow.createCell(12).setCellValue("LOP Amount");
 		headerRow.createCell(13).setCellValue("Net Payable");
-		
+				
 		int rowNum = 1; 
 		
 		YearMonth yearMonth = YearMonth.now(); 
