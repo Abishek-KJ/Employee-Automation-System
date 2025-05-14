@@ -86,7 +86,7 @@ public class EDashboardService {
 			} 
 		} 
 		
-		int lossOfPay = Math.max(0, (approvedLeaveDays - 2) * 100); 
+		int lossOfPay = Math.max(0, (approvedLeaveDays - 1) * 100); 
 		
 		String latestLeavesJpql = "SELECT l FROM ApplyLeave l " + 
 								  "WHERE l.leaveEmployeeName = :empName " + 

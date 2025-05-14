@@ -9,14 +9,19 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.eas.controller.EDashboardController;
 import com.example.eas.dto.EmployeeSalaryDTO;
 import com.example.eas.entity.AddEmployee;
 import com.example.eas.entity.SalaryComponents;
+import com.example.eas.service.EDashboardService.DashboardData;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Service
@@ -24,9 +29,19 @@ public class ExcelExportService {
 	
 	private final SalaryComponentsService salaryComponentsService; 
 	
-	public ExcelExportService(SalaryComponentsService salaryComponentsService) { 
+	private final EDashboardController eDashboardController; 
+	
+	private final EDashboardService dashboardService; 
+	
+	@PersistenceContext 
+	private EntityManager entityManager; 
+	
+	public ExcelExportService(SalaryComponentsService salaryComponentsService, EDashboardController eDashboardController, EDashboardService dashboardService) { 
 		this.salaryComponentsService = salaryComponentsService; 
+		this.eDashboardController = eDashboardController; 
+		this.dashboardService = dashboardService; 
 	} 
+	
 	
     public void  exportEmployeeSalaryToExcel() throws IOException { 
 		
@@ -40,7 +55,7 @@ public class ExcelExportService {
 		
 		LocalDate currentDate = LocalDate.now(); 
 		
-		String[] headers = {"Employee code", "Employee name", "Employee designation", "Basic salary", "House Rent Allowance", "Conveyance Allowance", "Medical Allowance", "Special Allowance", "Provident Fund", "totalAmount"}; 
+		String[] headers = {"Employee code", "Employee name", "Employee designation", "Basic salary", "House Rent Allowance", "Conveyance Allowance", "Medical Allowance", "Special Allowance", "Provident Fund", "totalAmount", "Gross Salary", "LOP Days", "LOP Amount", "Net Payable"}; 
 		
 		Sheet sheet = workbook.createSheet("Employee salary" + currentDate); 
 		
@@ -54,9 +69,17 @@ public class ExcelExportService {
 		headerRow.createCell(6).setCellValue("Medical Allowance"); 
 		headerRow.createCell(7).setCellValue("Special Allowance"); 
 		headerRow.createCell(8).setCellValue("Provident Fund"); 
-		headerRow.createCell(9).setCellValue("Total Amount"); 
+		headerRow.createCell(9).setCellValue("Gross Salary");
+		headerRow.createCell(10).setCellValue("Total Amount"); 
+		headerRow.createCell(11).setCellValue("LOP Days");
+		headerRow.createCell(12).setCellValue("LOP Amount");
+		headerRow.createCell(13).setCellValue("Net Payable");
 		
 		int rowNum = 1; 
+		
+		YearMonth yearMonth = YearMonth.now(); 
+		int daysInMonth = yearMonth.lengthOfMonth(); 
+		
 		
 		for(EmployeeSalaryDTO employee : employees) { 
 			Row row = sheet.createRow(rowNum++); 
@@ -84,15 +107,31 @@ public class ExcelExportService {
 			BigDecimal medicalAllowance = monthlyCtc.multiply(BigDecimal.valueOf(salaryComponents.getMedicalAllowance()).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP)); 
 			BigDecimal specialAllowance = monthlyCtc.multiply(BigDecimal.valueOf(salaryComponents.getSpecialAllowance()).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP)); 
 			BigDecimal providentFund = monthlyCtc.multiply(BigDecimal.valueOf(salaryComponents.getProvidentFund()).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP)); 
+			BigDecimal grossSalary = basicSalary.add(hra).add(conveyanceAllowance).add(medicalAllowance).add(specialAllowance); 
 			BigDecimal totalAmount = basicSalary.add(hra).add(conveyanceAllowance).add(medicalAllowance).add(specialAllowance).add(providentFund); 
-						
+			
+			
+			// LOP Calculation 
+			
+			DashboardData dashboardData = dashboardService.getDashboardData(employee.getEmpName(), employee.getJobRole()); 
+			int lopDays = dashboardData.getTotalDays(); 
+			
+			BigDecimal perDayGrossSalary = grossSalary.divide(BigDecimal.valueOf(daysInMonth), 2, RoundingMode.HALF_UP); 
+			BigDecimal lopAmount = perDayGrossSalary.multiply(BigDecimal.valueOf(lopDays)); 
+			BigDecimal netPayable = grossSalary.subtract(lopAmount); 
+			System.out.println(employee.getEmpName() + "'s Daily pay: " + netPayable.divide(BigDecimal.valueOf(daysInMonth), 2, RoundingMode.HALF_UP)); 
+								
 			row.createCell(3).setCellValue(basicSalary.doubleValue()); 
 			row.createCell(4).setCellValue(hra.doubleValue()); 
 			row.createCell(5).setCellValue(conveyanceAllowance.doubleValue()); 
 			row.createCell(6).setCellValue(medicalAllowance.doubleValue()); 
 			row.createCell(7).setCellValue(specialAllowance.doubleValue()); 
-			row.createCell(8).setCellValue(providentFund.doubleValue()); 		
-			row.createCell(9).setCellValue(totalAmount.doubleValue()); 
+			row.createCell(8).setCellValue(providentFund.doubleValue()); 
+			row.createCell(9).setCellValue(grossSalary.doubleValue()); 			
+			row.createCell(10).setCellValue(totalAmount.doubleValue()); 
+			row.createCell(11).setCellValue(lopDays); 
+			row.createCell(12).setCellValue(lopAmount.doubleValue()); 		
+			row.createCell(13).setCellValue(netPayable.doubleValue()); 
 			System.out.println("CTC for " + employee.getEmpName() + ": " + employee.getCtc()); 
 			System.out.println("Basic % : " + salaryComponents.getBasicSalary()); 
 			System.out.println("HRA % : " + salaryComponents.getHouseRentAllowance()); 
@@ -103,6 +142,7 @@ public class ExcelExportService {
 		for(int i = 0; i < headers.length; i++) { 
 			sheet.autoSizeColumn(i); 
 		} 
+		
 		
 		// response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); 
 		// response.setHeader("Content-Disposition", "attachment; filename=employee_salary.xlsx"); 

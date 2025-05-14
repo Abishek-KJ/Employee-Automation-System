@@ -1,0 +1,139 @@
+<!DOCTYPE html> 
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Organization Configuration</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<style>
+		body {
+			font-family: 'Segoe UI', sans-serif;
+			background-color: #f4f7f9;
+		}
+
+		.container {
+			width : 60%;  
+			max-width: 1500px;
+			margin: auto;
+			background-color: #ffffff;
+			padding: 30px;
+			border-radius: 10px;
+			box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+		}
+
+		h2 {
+			text-align: center;
+			color: #003366;
+			margin-bottom: 25px;
+		}
+
+		label {
+			display: block;
+			margin-top: 15px;
+			font-weight: bold;
+		}
+
+		input[type="text"],
+		input[type="number"],
+		input[type="file"] {
+			width: 100%;
+			padding: 10px;
+			margin-top: 6px;
+			border: 1px solid #ccc;
+			border-radius: 6px;
+		}
+
+		button {
+			margin-top: 25px;
+			width: 100%;
+			padding: 12px;
+			background-color: #007bff;
+			color: white;
+			border: none;
+			border-radius: 6px;
+			font-size: 16px;
+			cursor: pointer;
+		}
+
+		button:hover {
+			background-color: #0056b3;
+		}
+	</style>
+</head>
+
+<body>
+	<div th:replace="~{fragments/adminpage :: sidebar}"></div>
+
+	<div class="container">
+		<h2>Organization Setup</h2>
+		<form id="orgForm" th:action = "@{/admin/save-organization-details}" th:object = "${organization}" method = "post" enctype="multipart/form-data">
+
+			<label for="orgName">Organization Name</label>
+			<input type="text" th:field = "*{orgName}" id="orgName" name="orgName" required>
+
+			<label for="logo">Upload Organization Logo</label>
+			<input type="file" th:field = "*{logo}" id="logo" name="logo" accept="image/png" required>
+
+			<label for="deduction">Salary Deduction per Day Leave (%)</label>
+			<input type="number" th:field = "*{deduction}" id="deduction" name="deduction" min="0" max="100" step="0.01" required>
+
+			<button type="submit">Submit</button>
+		</form>
+	</div>
+	<footer>
+		<div th:replace="~{fragments/footer :: footer}"></div>
+	</footer>
+
+	<script>
+		document.getElementById("orgForm").addEventListener("submit", function (e) {
+		    const logo = document.getElementById("logo").files[0];
+		    if (logo && logo.size > 1024 * 1024) { // 1MB = 1024*1024 bytes
+		        alert("Image must be less than or equal to 1 MB.");
+		        e.preventDefault();
+		        return;
+		    }
+		});
+
+		document.getElementById("orgForm").addEventListener("submit", function (e) {
+			e.preventDefault();
+
+			const orgName = document.getElementById("orgName").value.trim();
+			const logo = document.getElementById("logo").files[0];
+			const deduction = document.getElementById("deduction").value;
+
+			if (!orgName || !logo || deduction === "") {
+				alert("Please fill out all fields.");
+				return;
+			}
+
+			// Submit the form using FormData (e.g., AJAX or send to backend)
+			const formData = new FormData();
+			formData.append("orgName", orgName);
+			formData.append("logo", logo);
+			formData.append("deduction", deduction);
+
+			// Example: AJAX POST (adapt URL for your backend)
+			fetch("/admin/save-organization-details", {
+				method: "POST",
+				body: formData
+			}).then(response => {
+				if (response.ok) {
+					alert("Organization details submitted successfully!");
+					document.getElementById("orgForm").reset();
+				} else {
+					alert("Failed to submit. Try again.");
+				}
+			}).catch(error => {
+				console.error(error);
+				alert("Error occurred during submission.");
+			});
+		});
+	</script>
+
+</body>
+
+</html>
+
+
+

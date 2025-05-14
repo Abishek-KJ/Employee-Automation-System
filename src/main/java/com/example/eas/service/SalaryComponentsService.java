@@ -45,5 +45,23 @@ public class SalaryComponentsService {
 		 String queryString = "SELECT new com.example.eas.dto.EmployeeSalaryDTO(e.empCode, e.empName, e.jobRole, e.ctc) FROM AddEmployee e"; 
 		 TypedQuery<EmployeeSalaryDTO> query = entityManager.createQuery(queryString, EmployeeSalaryDTO.class); 
 		 return query.getResultList(); 
-	 }
+	 } 
+	 
+		public int getPendingLeaveCountForCurrentMonth(String employeeName) { 
+			
+			LocalDate now = LocalDate.now(); 
+			LocalDate startOfMonth = now.withDayOfMonth(1); 
+			LocalDate endOfMonth = now.withDayOfMonth(now.lengthOfMonth()); 
+			
+			String jpql = "SELECT COUNT(a) FROM ApplyLeave a " + "WHERE a.leaveEmployeeName = :leaveEmployeeName " + "AND a.status = 2 " + "AND a.leaveDate BETWEEN :start AND :end"; 
+			
+			Long count = entityManager.createQuery(jpql, Long.class)
+						.setParameter("leaveEmployeeName", employeeName) 
+						.setParameter("start", startOfMonth) 
+						.setParameter("end", endOfMonth) 
+						.getSingleResult(); 
+			
+			return count.intValue(); 
+		}
+
 } 

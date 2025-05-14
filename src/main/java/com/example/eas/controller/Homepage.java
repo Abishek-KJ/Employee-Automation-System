@@ -4,8 +4,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.example.eas.dto.OrganizationDetailsConfigDTO;
 import com.example.eas.entity.BankDetails;
 import com.example.eas.entity.ManagerSignup;
+import com.example.eas.entity.OrganizationDetails;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -158,4 +160,15 @@ public class Homepage {
 		model.addAttribute("bankDetails", new BankDetails());
 		return "AdirectdepositIDFC"; 
 	} 
+	
+	@GetMapping("/Aconfiguration") 
+	public String aConfiguration(Model model) { 
+		model.addAttribute("organization", new OrganizationDetailsConfigDTO()); 
+		return "/Aconfiguration"; 
+	} 
+	
+	
 } 
+
+
+
