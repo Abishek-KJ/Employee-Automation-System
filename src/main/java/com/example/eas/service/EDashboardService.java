@@ -44,6 +44,7 @@ public class EDashboardService {
 		int approvedLeaves = 0; 
 		int approvedLeaveDays = 0; 
 		int pendingLeaves = 0; 
+		LocalDate todayDate = now; 
 		
 		
 		// 2. Get government holidays within this month 
@@ -99,7 +100,7 @@ public class EDashboardService {
 										.getResultList(); 
 		// System.out.println(((ApplyLeave) approvedLeaves).getStatus()); 
 		System.out.println("Approved leave days : " + approvedLeaveDays); 
-		return new DashboardData(approvedLeaveDays, pendingLeaves, lossOfPay, latestLeaves); 
+		return new DashboardData(approvedLeaveDays, pendingLeaves, lossOfPay, latestLeaves, todayDate); 
 	} 
 	
 	public List<LocalDate> getCurrentMonthHolidays(LocalDate start, LocalDate end){ 
@@ -116,13 +117,15 @@ public class EDashboardService {
 		private int pendingLeaves; 
 		private int lossOfPay; 
 		private List<ApplyLeave> latestLeaves; 
+		private LocalDate todayDate; 
 		
-		public DashboardData(int totalDays, int pendingLeaves, int lossOfPay, List<ApplyLeave> latestLeaves) {
+		public DashboardData(int totalDays, int pendingLeaves, int lossOfPay, List<ApplyLeave> latestLeaves, LocalDate todayDate) {
 			// super();
 			this.totalDays = totalDays;
 			this.pendingLeaves = pendingLeaves;
 			this.lossOfPay = lossOfPay;
 			this.latestLeaves = latestLeaves;
+			this.todayDate = todayDate; 
 		} 
 		
 		public int getTotalDays() {
@@ -131,11 +134,15 @@ public class EDashboardService {
 		public int getPendingLeaves() {
 			return pendingLeaves;
 		}
-		public int getLossOfPay() {
+		public int getLossOfPay() { 
 			return lossOfPay;
 		}
 		public List<ApplyLeave> getLatestLeaves() {
 			return latestLeaves;
+		}
+
+		public LocalDate getTodayDate() {
+			return LocalDate.now(); 
 		} 
 		
 	} 

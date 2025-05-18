@@ -75,8 +75,23 @@
         	<groupId>org.apache.poi</groupId>
         	<artifactId>poi-ooxml</artifactId>
     	    <version>5.2.3</version> <!-- or latest -->
-  		</dependency> 
-  		
+  		</dependency>
+
+		<!-- Apache POI for reading Excel -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>5.2.2</version>
+		</dependency>
+
+		<!-- iText for PDF generation -->
+		<dependency>
+			<groupId>com.itextpdf</groupId>
+			<artifactId>itext7-core</artifactId>
+			<version>7.2.3</version>
+			<type>pom</type>
+		</dependency>
+
   		<dependency>
     		<groupId>jakarta.validation</groupId>
     		<artifactId>jakarta.validation-api</artifactId>

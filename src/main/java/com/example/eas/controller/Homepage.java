@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.example.eas.dto.OrganizationDetailsConfigDTO;
 import com.example.eas.entity.BankDetails;
+import com.example.eas.entity.ManagerApplyLeave;
 import com.example.eas.entity.ManagerSignup;
 import com.example.eas.entity.OrganizationDetails;
 
@@ -123,6 +124,12 @@ public class Homepage {
 	@GetMapping("/Meditempinformation") 
 	public String mEditEmpInformation() { 
 		return "Meditempinformation"; 
+	} 
+	
+	@GetMapping("/Mapplyleave") 
+	public String mApplyLeave(Model model) { 
+		model.addAttribute("managerApplyLeave", new ManagerApplyLeave()); 
+		return "Mapplyleave"; 
 	} 
 	
 	// Administrator Login Webpages 

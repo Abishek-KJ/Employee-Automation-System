@@ -1,4 +1,4 @@
-package com.example.eas.controller;
+package com.example.eas.controller;  
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,9 +29,11 @@ public class EDashboardController {
 		
 		EDashboardService.DashboardData data = eDashboardService.getDashboardData(employeeName, employeeJobRole); 
 		
+		
+		
 		model.addAttribute("totalDays", data.getTotalDays()); 
 		model.addAttribute("pendingLeaves", data.getPendingLeaves()); 
-		model.addAttribute("lossOfPay", data.getLossOfPay()); 
+		model.addAttribute("todayDate", data.getTodayDate()); 
 		model.addAttribute("latestLeaves", data.getLatestLeaves()); 
 		return "eDashboard"; 
 		

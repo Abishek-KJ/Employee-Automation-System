@@ -62,7 +62,8 @@
 <div class="container">
     <h2>Download Payroll Slip</h2>
 
-    <form id="downloadForm">
+    <form id="downloadForm" method = "get" action = "/generate-pdf"> 
+		<input type = "hidden" name = "employeeCode" th:value = "${session.employeeCode}"/>
         <label for="month">Select Month</label>
         <select id="month" name="month" required>
             <option value="">--Select Month--</option>
@@ -81,27 +82,51 @@
         </select>
 
         <label for="year">Select Year</label>
-        <select id="year" name="year" required></select>
+        <select id="year" name="year" required>
+			<option value="">--Select Year--</option>
+			<option value="2011">2011</option>
+			<option value="2012">2012</option>
+			<option value="2013">2013</option>
+			<option value="2014">2014</option>
+			<option value="2015">2015</option>
+			<option value="2016">2016</option>
+			<option value="2017">2017</option>
+			<option value="2018">2018</option>
+			<option value="2019">2019</option>
+			<option value="2020">2020</option>
+			<option value="2021">2021</option>
+			<option value="2022">2022</option>
+			<option value="2023">2023</option>
+			<option value="2024">2024</option>
+			<option value="2025">2025</option>
+			<option value="2026">2026</option>
+			<option value="2027">2027</option>
+			<option value="2028">2028</option>
+			<option value="2029">2029</option>
+			<option value="2030">2030</option>
+		</select>
 
         <button type="submit">Download Slip</button>
-    </form>
+    </form> 
+	<p th:if = "${error}" style = "color:red;" th:text = "${error}"></p>  
 </div>
 
 <script>
     // Populate year dropdown (current year to 10 years back)
-    const yearSelect = document.getElementById("year");
+    /* const yearSelect = document.getElementById("year");
     const currentYear = new Date().getFullYear();
     for (let y = currentYear; y >= currentYear - 10; y--) {
         let option = document.createElement("option");
         option.value = y;
         option.text = y;
         yearSelect.appendChild(option);
-    }
+    } */ 
 
     // Handle form submit
-    document.getElementById("downloadForm").addEventListener("submit", function(e) {
-        e.preventDefault();
-
+    // document.getElementById("downloadForm").addEventListener("submit", function(e) {
+        // e.preventDefault();
+		
+		const employeeCode = document.getElementById("employeeCode").value; 
         const month = document.getElementById("month").value;
         const year = document.getElementById("year").value;
 
@@ -111,10 +136,48 @@
         }
 
         // Redirect to download API
-        const url = `/export/salary?month=${month}&year=${year}`;
-        window.location.href = url;
-    });
-</script>
+        const url = `/generate-pdf?employeeCode=${employeeCode}&month=${month}&year=${year}`;
+        window.location.href = url; 
+    // }); 
+</script> 
+<!-- <script th:inline="javascript">
+    const joinDate = new Date([[${joinDate}]]);
+    const currentDate = new Date();
+
+    const startYear = joinDate.getFullYear();
+    const startMonth = joinDate.getMonth(); // 0-based
+    const endYear = currentDate.getFullYear();
+    const endMonth = currentDate.getMonth();
+
+    const yearSelect = document.getElementById("year");
+    const monthSelect = document.getElementById("month");
+
+    for (let y = startYear; y <= endYear; y++) {
+        let opt = document.createElement("option");
+        opt.value = y;
+        opt.text = y;
+        yearSelect.appendChild(opt);
+    }
+
+    function updateMonths() {
+        const selectedYear = parseInt(yearSelect.value);
+        monthSelect.innerHTML = ""; // Clear
+
+        let monthStart = (selectedYear === startYear) ? startMonth : 0;
+        let monthEnd = (selectedYear === endYear) ? endMonth : 11;
+
+        for (let m = monthStart; m <= monthEnd; m++) {
+            let opt = document.createElement("option");
+            opt.value = m + 1;
+            opt.text = new Date(0, m).toLocaleString('default', { month: 'long' });
+            monthSelect.appendChild(opt);
+        }
+    }
+
+    yearSelect.addEventListener("change", updateMonths);
+    updateMonths(); // Initial load
+</script> --> 
+
 <footer>
 	<div th:replace="~{fragments/footer :: footer}"></div>  
 </footer>

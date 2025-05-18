@@ -1,30 +1,27 @@
 package com.example.eas.entity; 
 
+import jakarta.persistence.Entity;
+
 import java.time.LocalDate;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
+import jakarta.persistence.Column; 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.Id; 
+import jakarta.persistence.Table; 
 
-@Entity 
-@Table(name="applyleave") 
-public class ApplyLeave { 
+
+@Entity
+@Table(name = "managerapplyleave") 
+public class ManagerApplyLeave {
 	
 	@Id 
 	@GeneratedValue(strategy = GenerationType.IDENTITY) 
-	private int leaveEmployeeId; 
+	private int leaveManagerId; 
 	
-	/* @ManyToOne 
-	@JoinColumn(name = "emp_code", referencedColumnName = "emp_code", nullable = false) 
-	private AddEmployee employeeCode; */ 
+	@Column(name = "leave_manager_name") 
+	private String leaveManagerName; 
 	
-	@Column(name = "leave_employee_name") 
-	private String leaveEmployeeName; 
 	
 	@Column(name = "leave_type") 
 	private String leaveType; 
@@ -42,23 +39,17 @@ public class ApplyLeave {
 	private String description; 
 	
 	@Column(name = "status") 
-	private int status; 
+	private int status;
 	
-	/* @ManyToOne
-	@JoinColumn(name = "id", nullable = false)  
-	private AddEmployee addEmployee; */ 
-
-	public ApplyLeave() {
+	public ManagerApplyLeave() {
 		// super();
 	}
 
-	
-
-	public ApplyLeave(int leaveEmployeeId, String leaveEmployeeName, String leaveType, LocalDate leaveFrom,
+	public ManagerApplyLeave(int leaveManagerId, String leaveManagerName, String leaveType, LocalDate leaveFrom,
 			LocalDate leaveTo, String teamName, String description, int status) {
 		// super();
-		this.leaveEmployeeId = leaveEmployeeId;
-		this.leaveEmployeeName = leaveEmployeeName;
+		this.leaveManagerId = leaveManagerId;
+		this.leaveManagerName = leaveManagerName;
 		this.leaveType = leaveType;
 		this.leaveFrom = leaveFrom;
 		this.leaveTo = leaveTo;
@@ -67,22 +58,20 @@ public class ApplyLeave {
 		this.status = status;
 	}
 
-
-
-	public int getLeaveEmployeeId() {
-		return leaveEmployeeId;
+	public int getLeaveManagerId() {
+		return leaveManagerId;
 	}
 
-	public void setLeaveEmployeeId(int leaveEmployeeId) {
-		this.leaveEmployeeId = leaveEmployeeId;
+	public void setLeaveManagerId(int leaveManagerId) {
+		this.leaveManagerId = leaveManagerId;
 	}
 
-	public String getLeaveEmployeeName() {
-		return leaveEmployeeName;
+	public String getLeaveManagerName() {
+		return leaveManagerName;
 	}
 
-	public void setLeaveEmployeeName(String leaveEmployeeName) {
-		this.leaveEmployeeName = leaveEmployeeName;
+	public void setLeaveManagerName(String leaveManagerName) {
+		this.leaveManagerName = leaveManagerName;
 	}
 
 	public String getLeaveType() {
@@ -96,7 +85,7 @@ public class ApplyLeave {
 	public LocalDate getLeaveFrom() {
 		return leaveFrom;
 	}
-	 
+
 	public void setLeaveFrom(LocalDate leaveFrom) {
 		this.leaveFrom = leaveFrom;
 	}
@@ -123,11 +112,10 @@ public class ApplyLeave {
 
 	public void setDescription(String description) {
 		this.description = description;
-	} 
-	
-	public int getStatus() { 
-		// System.out.println("Status : " + getStatus()); 
-		return status; 
+	}
+
+	public int getStatus() {
+		return status;
 	}
 
 	public void setStatus(int status) {
@@ -147,6 +135,7 @@ public class ApplyLeave {
 		} 
 		
 	} 
-	 
+
 	
-} 
+}
+

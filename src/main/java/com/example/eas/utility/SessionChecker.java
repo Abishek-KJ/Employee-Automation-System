@@ -1,4 +1,4 @@
-package com.example.eas.utility;
+package com.example.eas.utility; 
 
 import java.util.Enumeration;
 
@@ -17,7 +17,8 @@ public class SessionChecker {
 			
 			while(sessionKeys.hasMoreElements()) { 
 				String key = sessionKeys.nextElement(); 
-				if(key.equals(searchKey)) { 
+				if(key.equals(searchKey)) 
+				{ 
 					System.out.println("Found session key : " + key + " with value: " + session.getAttribute(key)); 
 					return true; 
 				} 

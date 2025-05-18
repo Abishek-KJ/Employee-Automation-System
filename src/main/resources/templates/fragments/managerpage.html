@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="sidebar">
 <head>
     <meta charset="UTF-8">
@@ -130,7 +130,7 @@
 <body>
     <nav> 
 		<a href = "/index">
-      	  <img src="https://static.vecteezy.com/system/resources/previews/053/536/393/non_2x/attended-rpa-multi-color-concept-icon-bots-helping-employees-to-do-tasks-routine-processes-automation-round-shape-line-illustration-abstract-idea-graphic-design-easy-to-use-in-presentation-vector.jpg" alt="EAS Logo">
+      	  <img src="/images/organization_logo.png" alt="EAS Logo">
 		</a>
         <div class="appname">Employee Automation System</div>  
         <div class="navbar">
@@ -160,9 +160,11 @@
             </div>
             <div class="navbar-item">
                 <a onclick="toggleSubmenu('leaveManagement')"><i class="fas fa-calendar-check"></i> Leave Management <i class="fas fa-chevron-down toggle-icon"></i></a>
-                <div class="submenu" id="leaveManagement">
+                <div class="submenu" id="leaveManagement">  
                     <a href="/apply-leave/action-taken-by-manager"><i class="fas fa-check"></i>Action Taken</a> 
                     <a href="/apply-leave/all-roles"><i class="fas fa-hourglass-half"></i> Action Required</a>
+					<a href="/Mapplyleave"><i class="fas fa-plus-circle"></i>Apply Leave</a>
+					<a href="#"><i class="fas fa-cogs"></i>Leave History</a> 
                     <!-- <a href="#"><i class="fas fa-check"></i> Approved Leaves</a>
                     <a href="#"><i class="fas fa-times"></i> Not Approved Leaves</a> --> 
                 </div>

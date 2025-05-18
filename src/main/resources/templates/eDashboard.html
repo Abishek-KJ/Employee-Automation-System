@@ -156,10 +156,15 @@
 				<h4>PENDING LEAVE REQUEST</h4>
 				<p><span th:text = "${pendingLeaves}"></span></p>
 			</div>
-			<div class="card">
+			<!-- <div class="card">
 				<h4>LOSS OF PAY</h4>
 				<p><span th:text = "'₹' + ${lossOfPay}"></span></p>
+			</div> -->  
+			<div class="card">
+				<h4>TODAY</h4> 
+				<p><span th:text = "${#temporals.format(todayDate, 'dd MMMM yyyy')}"></span></p>
 			</div>
+
 		</div>
 
 		<div class="table-section">

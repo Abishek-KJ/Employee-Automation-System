@@ -1,4 +1,4 @@
-package com.example.eas.controller;
+package com.example.eas.controller; 
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,6 +33,8 @@ public class ManagerSignupController {
 	
 	@Autowired 
 	private SessionChecker sessionChecker; 
+	
+	private String managerName; 
 	
 	public ManagerSignupController(HttpSession session) { 
 		this.session = session; 
@@ -76,6 +78,7 @@ public class ManagerSignupController {
 			
 			// Extracting job role from the manager by using their mail address. 
 			extractJobRole = (managerMailId == null || !managerMailId.contains(".")) ? "Invalid Email" : managerMailId.split("[.@]")[1]; 
+			
 			System.out.println("Manager's job role : " + extractJobRole); 
 			session.setAttribute("managerJobRole", extractJobRole); 
 			System.out.println("Manager job role : " + getExtractJobRole()); 
@@ -84,7 +87,30 @@ public class ManagerSignupController {
 			
 			System.out.println("Managaer mail id from session : " + sessionChecker.isSessionKeyPresent(managerSession, "managerLoggedInEmail")); 
 			
+			if(managerMailId == null || !managerMailId.contains("@")) { 
+				return ""; 
+			} 
 			
+			String managerMailAddress = managerMailId.split("@")[0]; 
+			
+			String[] parts = managerMailAddress.split("\\."); 
+			
+			if(parts.length <= 1) { 
+				return parts[0]; 
+			} 
+			
+			
+			StringBuilder nameBuilder = new StringBuilder(); 
+			
+			for(int i = 0; i < parts.length - 1; i++) { 
+				nameBuilder.append(parts[i]); 
+				if(i < parts.length - 2) { 
+					nameBuilder.append("."); 
+				} 
+			} 
+			
+			session.setAttribute("managerName", nameBuilder.toString()); 
+			System.out.println("Manager's Name : " + nameBuilder.toString()); 
 			// Manager's dashboard page. 
 			return "mDashboard"; 			
 		} 
