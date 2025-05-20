@@ -66,7 +66,7 @@
     </style>
 </head>
 <body>
-	<div th:replace="~{fragments/employeepage :: sidebar}"></div> 
+	<div th:replace="~{fragments/managerpage :: sidebar}"></div> 
     <h3 style = "margin-left: 20px; font-size: 15px;">Employee Leave History</h3> 
     <table id="tookTable">
         <thead>
@@ -80,8 +80,8 @@
         </thead>
         <tbody id="leaveTableBody">
             <!-- Rows will be added dynamically --> 
-			<tr th:each = "leave : ${leaveHistory}"> 
-				<td th:text = "${leave.leaveEmployeeName}"></td> 
+			<tr th:each = "leave : ${managerApplyLeave}"> 
+				<td th:text = "${leave.leaveManagerName}"></td> 
 				<td th:text = "${leave.leaveType}"></td> 
 				<td th:text = "${leave.leaveFrom}"></td> 
 				<td th:text = "${leave.leaveTo}"></td> 

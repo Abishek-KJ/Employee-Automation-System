@@ -174,6 +174,16 @@ public class Homepage {
 		return "/Aconfiguration"; 
 	} 
 	
+	@GetMapping("/Aactionrequired") 
+	public String aActionRequired() { 
+		return "Aactionrequired"; 
+	} 
+	
+	@GetMapping("/Aactiontaken") 
+	public String aActionTaken(Model model) { 
+		model.addAttribute("managerApplyLeave", new ManagerApplyLeave()); 
+		return "Aactiontaken"; 
+	}
 	
 } 
 

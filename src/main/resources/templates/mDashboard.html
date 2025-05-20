@@ -1,15 +1,224 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org"> 
-	<head>
-		<link rel = "icon" href = "https://static.vecteezy.com/system/resources/previews/053/536/393/non_2x/attended-rpa-multi-color-concept-icon-bots-helping-employees-to-do-tasks-routine-processes-automation-round-shape-line-illustration-abstract-idea-graphic-design-easy-to-use-in-presentation-vector.jpg" type = "image/png"> 
-		<title>M-Dashboard</title> 
-	</head> 
-	<body> 
-		<div th:replace="~{fragments/managerpage :: sidebar}"></div>
-		<!-- <center>Welcome</center> --> 
-		<footer>
-		<div th:replace="~{fragments/footer :: footer}"></div>  
-		</footer> 
-		
-	</body>
-</html> 
+<!DOCTYPE html> 
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Manager Dashboard</title>
+	<link rel="icon"
+		href="https://static.vecteezy.com/system/resources/previews/053/536/393/non_2x/attended-rpa-multi-color-concept-icon-bots-helping-employees-to-do-tasks-routine-processes-automation-round-shape-line-illustration-abstract-idea-graphic-design-easy-to-use-in-presentation-vector.jpg"
+		type="image/png">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+	<style>
+		/* === Reused from previous CSS === */
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
 
+		body {
+			background-color: #f0f2f5;
+		}
+
+		.main-container {
+			padding: 20px;
+		}
+
+		.greeting {
+			font-size: 24px;
+			font-weight: 600;
+			margin-bottom: 20px;
+		}
+
+		.card-container {
+			display: flex;
+			gap: 20px;
+			flex-wrap: wrap;
+			margin-bottom: 30px;
+		}
+
+		.card {
+			flex: 1;
+			min-width: 250px;
+			background-color: #fff;
+			padding: 20px;
+			border-radius: 6px;
+			box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+			border-bottom: 4px solid #00bcd4;
+		}
+
+		.card h4 {
+			color: #555;
+			font-size: 14px;
+			margin-bottom: 10px;
+		}
+
+		.card p {
+			font-size: 26px;
+			font-weight: bold;
+		}
+
+		.table-section {
+			background: #fff;
+			padding: 20px;
+			border-radius: 6px;
+			box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+		}
+
+		.table-section h3 {
+			font-size: 18px;
+			margin-bottom: 20px;
+			color: #444;
+		}
+
+		table {
+			width: 100%;
+			border-collapse: collapse;
+		}
+		
+		th{ 
+			font-family:system-ui, -apply-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; 
+		}
+
+		th,
+		td { 
+			font-size: 15px; 
+			padding: 12px 16px;
+			text-align: left;
+			border-bottom: 1px solid #eee;
+		}
+
+		th {
+			color: #666;
+			font-weight: 500;
+			background-color: #f9f9f9;
+		}
+
+		td a {
+			color: #007bff;
+			text-decoration: none;
+		} 
+		tbody {
+			font-family: 'Segoe UI'!important ; /* Change font */ 
+			font-size: 14px; /* Adjust size */
+			font-weight: normal;
+		}  
+		.status-approved {
+			color: green;
+			font-weight: normal;
+		}
+
+		.status-rejected {
+			color: red;
+			font-weight: normal;
+		}
+
+		.status-pending {
+			color: blue;
+			font-weight: normal;
+		}
+
+		.view-btn {
+			background-color: #2196f3;
+			color: white;
+			padding: 8px 14px;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+			font-weight: 500;
+		}
+
+		.view-btn:hover {
+			background-color: #1976d2;
+		}
+
+		@media (max-width: 768px) {
+			.main-container {
+				margin-left: 0;
+				padding: 15px;
+			}
+		}
+	</style>
+</head>
+
+<body>
+
+	<div th:replace="~{fragments/managerpage :: sidebar}"></div> 
+	<div class="main-container">
+		<div class="greeting" id="greeting-text"></div>
+
+		<div class="card-container"> 
+			<div class="card">
+				<h4>ABSENTEES</h4>
+				<p><span th:text="${#temporals.format(todayDate, 'dd MMMM yyyy')}"></span></p>
+			</div>
+			<div class="card"> 
+				<h4>TOTAL LEAVES (THIS MONTH)</h4>
+				<p><span th:text = "${totalDays} + Days"></span></p>
+			</div>
+			<div class="card">
+				<h4>PENDING LEAVE REQUEST</h4>
+				<p><span th:text = "${pendingLeaves}"></span></p>
+			</div>
+			<!-- <div class="card">
+				<h4>LOSS OF PAY</h4>
+				<p><span th:text = "'₹' + ${lossOfPay}"></span></p>
+			</div> -->  
+			<div class="card">
+				<h4>TODAY</h4> 
+				<p><span th:text = "${#temporals.format(todayDate, 'dd MMMM yyyy')}"></span></p>
+			</div>
+
+		</div>
+
+		<div class="table-section">
+			<h3>LATEST LEAVE APPLICATIONS</h3>
+			<table>
+				<thead>
+					<tr>
+						<th>Leave Type</th>
+						<th>Leave From</th>
+						<th>Leave To</th> 
+						<th>Description</th>
+						<th>Status</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each = "leave : ${managerApplyLeave}">
+						
+						<td th:text = "${leave.leaveType}"></td>
+						<td th:text = "${leave.leaveFrom}"></td>
+						<td th:text = "${leave.leaveTo}"></td> 
+						<td th:text = "${leave.description}"></td>
+
+						<td>
+							<span th:if = "${leave.status == 0}" style = "color: orange;">Pending</span> 
+							<span th:if = "${leave.status == 1}" style = "color: green;">Approved</span> 
+							<span th:if = "${leave.status == 2}" style = "color: red;">Rejected</span> 						
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<script>
+		const greetingElement = document.getElementById('greeting-text');
+		const hour = new Date().getHours();
+
+		let greeting = "Welcome!";
+		if (hour >= 5 && hour < 12) {
+			greeting = "Good Morning!";
+		} else if (hour >= 12 && hour < 17) {
+			greeting = "Good Afternoon!";
+		} else if (hour >= 17 && hour < 21) {
+			greeting = "Good Evening!";
+		}
+
+		greetingElement.textContent = greeting;
+	</script>
+	<footer>
+		<div th:replace="~{fragments/footer :: footer}"></div>  
+	</footer>
+</body>
+
+</html>

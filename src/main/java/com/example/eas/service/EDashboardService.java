@@ -1,4 +1,4 @@
-package com.example.eas.service;
+package com.example.eas.service; 
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -110,7 +110,7 @@ public class EDashboardService {
 				.setParameter("end", end) 
 				.getResultList(); 
 	} 
-		
+	
 	public static class DashboardData{ 
 		
 		private int totalDays; 

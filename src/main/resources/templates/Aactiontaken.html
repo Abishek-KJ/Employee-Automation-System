@@ -2,10 +2,9 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
 	<link rel = "icon" href = "https://static.vecteezy.com/system/resources/previews/053/536/393/non_2x/attended-rpa-multi-color-concept-icon-bots-helping-employees-to-do-tasks-routine-processes-automation-round-shape-line-illustration-abstract-idea-graphic-design-easy-to-use-in-presentation-vector.jpg" type = "image/png"> 
-    <title>Employee Leave History</title> 
-	
+    <title>Action taken</title> 
 	<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css" />	  
 
 	
@@ -66,8 +65,8 @@
     </style>
 </head>
 <body>
-	<div th:replace="~{fragments/employeepage :: sidebar}"></div> 
-    <h3 style = "margin-left: 20px; font-size: 15px;">Employee Leave History</h3> 
+	<div th:replace="~{fragments/adminpage :: sidebar}"></div> 
+    <h3 style = "margin-left: 20px; font-size: 15px;">Action Taken</h3> 
     <table id="tookTable">
         <thead>
             <tr> 
@@ -80,13 +79,12 @@
         </thead>
         <tbody id="leaveTableBody">
             <!-- Rows will be added dynamically --> 
-			<tr th:each = "leave : ${leaveHistory}"> 
-				<td th:text = "${leave.leaveEmployeeName}"></td> 
+			<tr th:each = "leave : ${managerApplyLeave}"> 
+				<td th:text = "${leave.leaveManagerName}"></td> 
 				<td th:text = "${leave.leaveType}"></td> 
 				<td th:text = "${leave.leaveFrom}"></td> 
 				<td th:text = "${leave.leaveTo}"></td> 
-				<td th:text = "${leave.status == 1 ? 'Accepted' : (leave.status == 2 ? 'Rejected' : 'Pending')}"
-					th:style = "${leave.status == 1 ? 'color : green;' : (leave.status == 2 ? 'color : red;' : 'color : orange;')}"></td>				
+				<td th:text = "${leave.status == 1 ? 'Accepted' : (leave.status == 2 ? 'Rejected' : 'Pending')}"></td>				
 			</tr> 
 			
         </tbody>
