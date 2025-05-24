@@ -17,8 +17,10 @@ import org.springframework.stereotype.Service;
 import com.example.eas.controller.EDashboardController;
 import com.example.eas.dto.EmployeeSalaryDTO;
 import com.example.eas.entity.AddEmployee;
+import com.example.eas.entity.ManagerSignup;
 import com.example.eas.entity.SalaryComponents;
 import com.example.eas.service.EDashboardService.DashboardData;
+import com.example.eas.dto.ManagerSalaryDTO; 
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -33,13 +35,19 @@ public class ExcelExportService {
 	
 	private final EDashboardService dashboardService; 
 	
+	private final ManageManagerService manageManagerService; 
+	
+	// @Autowired 
+	// private NameSeparation nameSeparation; 
+	
 	@PersistenceContext 
 	private EntityManager entityManager; 
 	
-	public ExcelExportService(SalaryComponentsService salaryComponentsService, EDashboardController eDashboardController, EDashboardService dashboardService) { 
+	public ExcelExportService(SalaryComponentsService salaryComponentsService, EDashboardController eDashboardController, EDashboardService dashboardService, ManageManagerService manageManagerService) { 
 		this.salaryComponentsService = salaryComponentsService; 
 		this.eDashboardController = eDashboardController; 
 		this.dashboardService = dashboardService; 
+		this.manageManagerService = manageManagerService; 
 	} 
 	
 	
@@ -48,6 +56,8 @@ public class ExcelExportService {
 		SalaryComponents salaryComponents = salaryComponentsService.getSalaryComponentsForCurrentMonth(); 
 		
 		List<EmployeeSalaryDTO> employees = salaryComponentsService.getAllEmployees(); 
+		
+		List<ManagerSalaryDTO> managers = salaryComponentsService.getAllManagers(); 
 		
 		// Create a workbook and sheet 
 		
@@ -138,7 +148,46 @@ public class ExcelExportService {
 			System.out.println("Salary Components for current month : " + salaryComponents.getBasicSalary() + ", " + salaryComponents.getConveyanceAllowance() + ", " + salaryComponents.getHouseRentAllowance() + ", " + salaryComponents.getMedicalAllowance() + ", " + salaryComponents.getProvidentFund() + ", " + salaryComponents.getSpecialAllowance()); 
 		} 
 		
-		
+		for(ManagerSalaryDTO manager : managers) { 
+			if(manager.getManagerCTC() == null || manager.getManagerCTC().compareTo(BigDecimal.ZERO) <= 0) { 
+				System.out.println("Skipping manager due to invalid CTC : " + manager.getName()); 
+				continue; 
+			} 
+			
+			BigDecimal monthlyCtc = manager.getManagerCTC().divide(BigDecimal.valueOf(12), 2, RoundingMode.HALF_UP); 
+			BigDecimal basicSalary = monthlyCtc.multiply(BigDecimal.valueOf(salaryComponents.getBasicSalary()).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP)); 
+			BigDecimal hra = monthlyCtc.multiply(BigDecimal.valueOf(salaryComponents.getHouseRentAllowance()).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP)); 
+			BigDecimal conveyance = monthlyCtc.multiply(BigDecimal.valueOf(salaryComponents.getConveyanceAllowance()).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP)); 
+			BigDecimal medical = monthlyCtc.multiply(BigDecimal.valueOf(salaryComponents.getMedicalAllowance()).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP)); 
+			BigDecimal special = monthlyCtc.multiply(BigDecimal.valueOf(salaryComponents.getSpecialAllowance()).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP)); 
+			BigDecimal pf = monthlyCtc.multiply(BigDecimal.valueOf(salaryComponents.getProvidentFund()).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP)); 
+			BigDecimal gross = basicSalary.add(hra).add(conveyance).add(medical).add(special); 
+			BigDecimal total = gross.add(pf); 
+			
+			DashboardData dashboardData = dashboardService.getDashboardData(manager.getName(), manager.getDesignation()); 
+			int lopDays = dashboardData.getTotalDays(); 
+			BigDecimal perDayGross = gross.divide(BigDecimal.valueOf(daysInMonth), 2, RoundingMode.HALF_UP); 
+			BigDecimal lopAmount = perDayGross.multiply(BigDecimal.valueOf(lopDays));  
+			BigDecimal netPay = gross.subtract(lopAmount); 
+			
+			Row row = sheet.createRow(rowNum++); 
+			row.createCell(0).setCellValue(""); 
+			row.createCell(1).setCellValue(manager.getName()); 
+			row.createCell(2).setCellValue(manager.getDesignation()); 
+			row.createCell(3).setCellValue(basicSalary.doubleValue()); 
+			row.createCell(4).setCellValue(hra.doubleValue()); 
+			row.createCell(5).setCellValue(conveyance.doubleValue()); 
+			row.createCell(6).setCellValue(medical.doubleValue()); 
+			row.createCell(7).setCellValue(special.doubleValue()); 
+			row.createCell(8).setCellValue(pf.doubleValue()); 
+			row.createCell(9).setCellValue(gross.doubleValue()); 
+			row.createCell(10).setCellValue(total.doubleValue()); 
+			row.createCell(11).setCellValue(lopDays); 
+			row.createCell(12).setCellValue(lopAmount.doubleValue()); 
+			row.createCell(13).setCellValue(netPay.doubleValue()); 
+			
+		} 
+					
 		for(int i = 0; i < headers.length; i++) { 
 			sheet.autoSizeColumn(i); 
 		} 
@@ -165,81 +214,6 @@ public class ExcelExportService {
 		
 
 	} 
-	
-/* 	public void exportEmployeeSalaryToExcel() throws IOException {
-	    SalaryComponents salaryComponents = salaryComponentsService.getSalaryComponentsForCurrentMonth();
-	    List<EmployeeSalaryDTO> employees = salaryComponentsService.getAllEmployees();
-
-	    // Create a new workbook
-	    try (Workbook workbook = new XSSFWorkbook()) {
-	        LocalDate currentDate = LocalDate.now();
-	        String sheetName = "Employee_Salary_" + currentDate.toString().replace(":", "-");
-	        Sheet sheet = workbook.createSheet(sheetName);
-
-	        // Header row
-	        Row headerRow = sheet.createRow(0);
-	        headerRow.createCell(0).setCellValue("Employee Code");
-	        headerRow.createCell(1).setCellValue("Employee Name");
-	        headerRow.createCell(2).setCellValue("Designation");
-	        headerRow.createCell(3).setCellValue("Basic Salary");
-	        headerRow.createCell(4).setCellValue("HRA");
-	        headerRow.createCell(5).setCellValue("Conveyance Allowance");
-	        headerRow.createCell(6).setCellValue("Medical Allowance");
-	        headerRow.createCell(7).setCellValue("Special Allowance");
-	        headerRow.createCell(8).setCellValue("Provident Fund");
-
-	        int rowNum = 1;
-
-	        for (EmployeeSalaryDTO employee : employees) {
-	            Row row = sheet.createRow(rowNum++);
-	            row.createCell(0).setCellValue(employee.getEmpCode());
-	            row.createCell(1).setCellValue(employee.getEmpName());
-	            row.createCell(2).setCellValue(employee.getJobRole());
-
-	            BigDecimal monthlyCtc = employee.getCtc()
-	                    .divide(BigDecimal.valueOf(12), 2, RoundingMode.HALF_UP);
-
-	            BigDecimal basicSalary = monthlyCtc.multiply(
-	                    BigDecimal.valueOf(salaryComponents.getBasicSalary()).divide(BigDecimal.valueOf(100), 4, RoundingMode.HALF_UP));
-	            BigDecimal hra = monthlyCtc.multiply(
-	                    BigDecimal.valueOf(salaryComponents.getHouseRentAllowance()).divide(BigDecimal.valueOf(100), 4, RoundingMode.HALF_UP));
-	            BigDecimal conveyance = monthlyCtc.multiply(
-	                    BigDecimal.valueOf(salaryComponents.getConveyanceAllowance()).divide(BigDecimal.valueOf(100), 4, RoundingMode.HALF_UP));
-	            BigDecimal medical = monthlyCtc.multiply(
-	                    BigDecimal.valueOf(salaryComponents.getMedicalAllowance()).divide(BigDecimal.valueOf(100), 4, RoundingMode.HALF_UP));
-	            BigDecimal special = monthlyCtc.multiply(
-	                    BigDecimal.valueOf(salaryComponents.getSpecialAllowance()).divide(BigDecimal.valueOf(100), 4, RoundingMode.HALF_UP));
-	            BigDecimal pf = monthlyCtc.multiply(
-	                    BigDecimal.valueOf(salaryComponents.getProvidentFund()).divide(BigDecimal.valueOf(100), 4, RoundingMode.HALF_UP));
-
-	            row.createCell(3).setCellValue(basicSalary.setScale(2, RoundingMode.HALF_UP).doubleValue());
-	            row.createCell(4).setCellValue(hra.setScale(2, RoundingMode.HALF_UP).doubleValue());
-	            row.createCell(5).setCellValue(conveyance.setScale(2, RoundingMode.HALF_UP).doubleValue());
-	            row.createCell(6).setCellValue(medical.setScale(2, RoundingMode.HALF_UP).doubleValue());
-	            row.createCell(7).setCellValue(special.setScale(2, RoundingMode.HALF_UP).doubleValue());
-	            row.createCell(8).setCellValue(pf.setScale(2, RoundingMode.HALF_UP).doubleValue());
-	        }
-
-	        // Save to file
-	        String folderPath = "D:/Employee Automation System/Project/Exports/";
-	        String fileName = "employee_salary_" + currentDate + ".xlsx";
-	        File dir = new File(folderPath);
-
-	        if (!dir.exists()) {
-	            boolean created = dir.mkdirs();
-	            if (!created) {
-	                throw new IOException("Failed to create directory: " + folderPath);
-	            }
-	        }
-
-	        File file = new File(dir, fileName);
-	        try (java.io.FileOutputStream fileOut = new java.io.FileOutputStream(file)) {
-	            workbook.write(fileOut);
-	        }
-
-	        System.out.println("Excel file successfully saved at: " + file.getAbsolutePath()); 
-	    }
-	} */ 
 
 	
 } 

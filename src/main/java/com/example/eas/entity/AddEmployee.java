@@ -1,4 +1,4 @@
-package com.example.eas.entity;
+package com.example.eas.entity; 
 
 import java.math.BigDecimal;
 import java.sql.Date;

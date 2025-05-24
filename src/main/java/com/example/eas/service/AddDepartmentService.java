@@ -35,5 +35,17 @@ public class AddDepartmentService {
 		return departmentQuery.getResultList(); 
 	} 
 	
+	 @Transactional
+	    public void deleteByDepCode(String depCode) {
+	        List<AddDepartment> departments = entityManager
+	                .createQuery("SELECT d FROM AddDepartment d WHERE d.depCode = :code", AddDepartment.class)
+	                .setParameter("code", depCode)
+	                .getResultList();
+
+	        for (AddDepartment department : departments) {
+	            entityManager.remove(department);
+	        }
+	    }
 	
 }
+

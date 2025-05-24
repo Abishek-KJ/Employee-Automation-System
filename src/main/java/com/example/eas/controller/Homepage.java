@@ -132,6 +132,12 @@ public class Homepage {
 		return "Mapplyleave"; 
 	} 
 	
+	@GetMapping("/Mpayroll") 
+	public String mPayroll() { 
+		return "Mpayroll"; 
+	} 
+
+	
 	// Administrator Login Webpages 
 	
 	@GetMapping("/aPage") 
@@ -183,9 +189,19 @@ public class Homepage {
 	public String aActionTaken(Model model) { 
 		model.addAttribute("managerApplyLeave", new ManagerApplyLeave()); 
 		return "Aactiontaken"; 
-	}
+	} 
 	
-} 
+	@GetMapping("/Amanage") 
+	public String aManage(Model model) { 
+		model.addAttribute("manage", new ManagerSignup());  
+ 		return "/Amanage"; 
+	} 
+	
+	@GetMapping("/Aeditmanager") 
+	public String aEditManager() { 
+		return "Aeditmanager"; 
+	} 
 
+} 
 
 

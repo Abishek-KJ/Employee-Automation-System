@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.eas.entity.AddDepartment;
 import com.example.eas.service.AddDepartmentService;
@@ -39,5 +40,12 @@ public class AddDepartmentController {
 		return "Mmanagedepartment"; 
 	} 
 	
+	@PostMapping("/departments/delete")
+    public String deleteDepartment(@RequestParam("depCode") String depCode) {
+        addDepartmentService.deleteByDepCode(depCode);
+        return "redirect:/department/departments-list";
+    }
 	
 }
+
+

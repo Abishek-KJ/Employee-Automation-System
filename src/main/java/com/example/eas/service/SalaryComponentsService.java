@@ -1,8 +1,10 @@
-package com.example.eas.service;
+package com.example.eas.service; 
 
-import com.example.eas.dto.EmployeeSalaryDTO; 
+import com.example.eas.dto.EmployeeSalaryDTO;
+import com.example.eas.dto.ManagerSalaryDTO;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -44,6 +46,12 @@ public class SalaryComponentsService {
 		 
 		 String queryString = "SELECT new com.example.eas.dto.EmployeeSalaryDTO(e.empCode, e.empName, e.jobRole, e.ctc) FROM AddEmployee e"; 
 		 TypedQuery<EmployeeSalaryDTO> query = entityManager.createQuery(queryString, EmployeeSalaryDTO.class); 
+		 return query.getResultList(); 
+	 } 
+	 
+	 public List<ManagerSalaryDTO> getAllManagers(){ 
+		 String queryString = "SELECT new com.example.eas.dto.ManagerSalaryDTO(m.name, m.managerMailId, m.managerCTC) FROM ManagerSignup m"; 
+		 TypedQuery<ManagerSalaryDTO> query = entityManager.createQuery(queryString, ManagerSalaryDTO.class); 
 		 return query.getResultList(); 
 	 } 
 	 

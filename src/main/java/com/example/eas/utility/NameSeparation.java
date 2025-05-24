@@ -1,4 +1,4 @@
-package com.example.eas.utility;
+package com.example.eas.utility; 
 
 import org.springframework.stereotype.Component;
 
@@ -30,6 +30,24 @@ public class NameSeparation {
 		System.out.println(parts[0]); 
 		
 		return parts[0]; 
+	} 
+	
+	
+	public static String extractDesignationFromEmail(String email) { 
+		
+		if(email == null || !email.contains("@")) { 
+			return "unknown"; 
+		} 
+		
+		String localPart = email.substring(0, email.indexOf('@')); 
+		
+		String[] parts = localPart.split("\\."); 
+		
+		if(parts.length > 0) { 
+			return parts[parts.length - 1].substring(0, 1).toUpperCase() + parts[parts.length - 1].substring(1); 
+		} 
+		
+		return "Unknown"; 
 	} 
 
 }  

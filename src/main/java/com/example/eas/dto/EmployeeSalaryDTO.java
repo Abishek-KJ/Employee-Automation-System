@@ -1,5 +1,5 @@
-package com.example.eas.dto;
-
+package com.example.eas.dto; 
+ 
 import java.math.BigDecimal;
 
 public class EmployeeSalaryDTO {

@@ -112,7 +112,7 @@ public class ManagerSignupController {
 			session.setAttribute("managerName", nameBuilder.toString()); 
 			System.out.println("Manager's Name : " + nameBuilder.toString()); 
 			// Manager's dashboard page. 
-			return "mDashboard"; 			
+			return "redirect:/manager/dashboard"; 			
 		} 
 		else { 
 			model.addAttribute("error", "Invalid Email or Password!"); 

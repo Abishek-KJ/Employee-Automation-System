@@ -1,5 +1,7 @@
-package com.example.eas.entity;
+package com.example.eas.entity; 
 
+
+import java.math.BigDecimal;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,6 +26,12 @@ public class ManagerSignup {
 	
 	@Column(name = "password") 
 	private String password;
+	
+	@Column(name = "manager_ctc") 
+	private BigDecimal managerCTC; 
+	
+	@Column(name = "manager_previous_experience") 
+	private int managerPreviousExperience; 
 	
 	
 	public ManagerSignup(int id, String name, String managerMailId, String password) {
@@ -68,12 +76,23 @@ public class ManagerSignup {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public BigDecimal getManagerCTC() {
+		return managerCTC;
+	}
+
+	public void setManagerCTC(BigDecimal managerCTC) {
+		this.managerCTC = managerCTC;
+	}
+
+	public int getManagerPreviousExperience() {
+		return managerPreviousExperience;
+	}
+
+	public void setManagerPreviousExperience(int managerPreviousExperience) {
+		this.managerPreviousExperience = managerPreviousExperience;
 	} 
 	
-	
-	
-	
-	
-	
-
 }
+

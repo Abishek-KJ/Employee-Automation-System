@@ -149,16 +149,16 @@
 
 		<div class="card-container"> 
 			<div class="card">
-				<h4>ABSENTEES</h4>
-				<p><span th:text="${#temporals.format(todayDate, 'dd MMMM yyyy')}"></span></p>
+				<h4>TODAY ABSENTEES (MY TEAM)</h4>
+				<p><span th:text="${countOfAbsentees}"></span></p>
 			</div>
 			<div class="card"> 
 				<h4>TOTAL LEAVES (THIS MONTH)</h4>
-				<p><span th:text = "${totalDays} + Days"></span></p>
+				<p><span th:text = "${thisMonthLeaves} + ' Days'"></span></p>
 			</div>
 			<div class="card">
 				<h4>PENDING LEAVE REQUEST</h4>
-				<p><span th:text = "${pendingLeaves}"></span></p>
+				<p><span th:text = "${pendingLeaveRequestCount}"></span></p>
 			</div>
 			<!-- <div class="card">
 				<h4>LOSS OF PAY</h4>
@@ -184,7 +184,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:each = "leave : ${managerApplyLeave}">
+					<tr th:each = "leave : ${lastFourLeaves}">
 						
 						<td th:text = "${leave.leaveType}"></td>
 						<td th:text = "${leave.leaveFrom}"></td>
