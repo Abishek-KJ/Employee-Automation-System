@@ -138,7 +138,7 @@ public class ManagerSignupController {
 				// If email is not found in session, redirect to login 
 				
 				if(mailId == null) { 
-					return "Echangepassword"; 
+					return "Mchangepassword"; 
 				} 
 				
 				try { 
@@ -147,11 +147,11 @@ public class ManagerSignupController {
 					String storedPassword = (String) query.getSingleResult(); 
 					
 					if(!storedPassword.equals(currentPassword)) { 
-						return "Echangepassword"; 
+						return "Mchangepassword"; 
 					} 
 					
 					if(!newPassword.equals(confirmPassword)) { 
-						return "Echangepassword"; 
+						return "Mchangepassword"; 
 					} 
 					
 					// Update the password 
