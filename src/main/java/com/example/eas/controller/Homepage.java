@@ -39,8 +39,17 @@ public class Homepage {
 		session.invalidate(); 
 		model.addAttribute("managerSignup", new ManagerSignup()); 
 		return "welcome"; 
+	}  
+	
+	@GetMapping("/ChangePassword") 
+	public String changePassword() { 
+		return "ChangePassword"; 
 	} 
 	
+	@GetMapping("/Mforgotpassword") 
+	public String mForgotPassword() { 
+		return "Mforgotpassword"; 
+	} 
 	
 	// Employee Login Webpages 
 	
@@ -201,6 +210,12 @@ public class Homepage {
 	public String aEditManager() { 
 		return "Aeditmanager"; 
 	} 
+	
+	@GetMapping("/aDashboard") 
+	public String aDashboard() { 
+		return "aDashboard"; 
+	} 
+
 
 } 
 

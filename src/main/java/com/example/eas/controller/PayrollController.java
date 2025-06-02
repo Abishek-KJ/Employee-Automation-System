@@ -70,6 +70,42 @@ public class PayrollController {
 		return "Epayroll"; 
 	} 
 	
+	
+	@GetMapping("/manager-generate-pdf") 
+	public ResponseEntity<?> managerGeneratePayrollPdf(@RequestParam("managerName") String managerName, @RequestParam("month") int month, @RequestParam("year") int year, Model model) throws IOException { 
+		
+		try { 
+			ByteArrayResource pdf = payrollService.managerGeneratePayrollPdf(managerName, month, year); 
+		
+		
+		return ResponseEntity.ok()	
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename = " + managerName + "_payroll.pdf")
+				.contentType(MediaType.APPLICATION_PDF) 
+				.contentLength(pdf.contentLength())
+				.body(pdf); 
+		} 
+		catch(SalaryNotCreditedException | NotEligibleException exception) { 
+			// model.addAttribute("error", exception.getMessage()); 
+			return ResponseEntity.status(302)
+					.header(HttpHeaders.LOCATION, "/manager-payroll-form?error=" + URLEncoder.encode(exception.getMessage(), StandardCharsets.UTF_8))
+					.build(); 
+		} 
+		catch(IOException exception) { 
+			// model.addAttribute("error", "An unexpected error occured."); 
+			// return "Epayroll"; 
+			return ResponseEntity.status(302)
+					.header(HttpHeaders.LOCATION, "/manager-payroll-form?error=" + URLEncoder.encode(exception.getMessage(), StandardCharsets.UTF_8))
+					.build(); 
+		} 
+	} 
+	
+	@GetMapping("/manager-payroll-form") 
+	public String managerPayrollForm(@RequestParam(value = "error", required = false) String error, Model model) { 
+		model.addAttribute("error", error); 
+		return "Mpayroll"; 
+	} 
+
 } 
+
 
 

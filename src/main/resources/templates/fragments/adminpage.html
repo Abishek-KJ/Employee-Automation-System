@@ -41,7 +41,7 @@
             margin-right: 2px;
         } 
         .appname { 
-			padding-right: 200px; 
+			padding-right: 550px; 
 		} 	/* Leave Type is added reduce padding-right=50px */ 
 
         .navbar {
@@ -135,7 +135,7 @@
         <div class="appname">Employee Automation System</div>  
         <div class="navbar"> 
 			<div class="navbar-item">
-			    <a href="#"><i class="fas fa-key"></i> Dashboard</a> 
+			    <a href="/administrator/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a> 
 			</div>
 			            
             <!-- <div class="navbar-item">
@@ -143,9 +143,9 @@
             </div> --> 
             
             <div class="navbar-item">
-                <a onclick="toggleSubmenu('leaveType')"><i class="fas fa-tachometer-alt"></i> Manage <i class="fas fa-chevron-down toggle-icon"></i></a>
+                <a onclick="toggleSubmenu('leaveType')"><i class="fas fa-key"></i> Manage <i class="fas fa-chevron-down toggle-icon"></i></a>
                 <div class="submenu" id="leaveType">
-					<a href="/admin/manage-managers"><i class="fas fa-user"></i> Managers</a>
+					<a href="/admin/manage-managers"><i class="fas fa-users"></i> Managers</a>
 					<a href="/manager/all-roles"><i class="fas fa-hourglass-half"></i> Action Required</a> 
 					<a href="/manager/action-taken"><i class="fas fa-check"></i>Action Taken</a> 
 				</div>

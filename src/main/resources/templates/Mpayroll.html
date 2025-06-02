@@ -62,8 +62,8 @@
 <div class="container">
     <h2>Download Payroll Slip</h2>
 
-    <form id="downloadForm" method = "get" action = "/generate-pdf"> 
-		<input type = "hidden" name = "employeeCode" th:value = "${session.employeeCode}"/>
+    <form id="downloadForm" method = "get" action = "/manager-generate-pdf"> 
+		<input type = "hidden" name = "managerName" th:value = "${session.managerName}"/>
         <label for="month">Select Month</label>
         <select id="month" name="month" required>
             <option value="">--Select Month--</option>
@@ -136,7 +136,7 @@
         }
 
         // Redirect to download API
-        const url = `/generate-pdf?employeeCode=${employeeCode}&month=${month}&year=${year}`;
+        const url = `/manager-generate-pdf?managerName=${managerName}&month=${month}&year=${year}`; 
         window.location.href = url; 
     // }); 
 </script> 

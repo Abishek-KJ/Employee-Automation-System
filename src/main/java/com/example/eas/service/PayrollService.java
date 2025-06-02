@@ -124,7 +124,7 @@ public class PayrollService {
             Row headerRow = sheet.getRow(0);
             Row matchedRow = null;
 
-            for (int r = 1; r <= sheet.getLastRowNum(); r++) {
+            for (int r = 0; r <= sheet.getLastRowNum(); r++) {
                 Row row = sheet.getRow(r);
                 if (row != null && row.getCell(0) != null) {
                     String cellValue = getCellValue(row.getCell(0));
@@ -159,7 +159,151 @@ public class PayrollService {
             document.close();
             return new ByteArrayResource(out.toByteArray());
         }
-    }
+    } 
+	
+	/* public ByteArrayResource managerGeneratePayrollPdf(String managerName, int month, int year) throws IOException { 
+        File folder = new File(EXPORT_PATH);
+        File[] files = folder.listFiles();
+
+        if (files == null) {
+            throw new FileNotFoundException("Export directory not found.");
+        }
+
+        File matchedFile = null;
+        Pattern pattern = Pattern.compile("employee_salary_(\\d{4}-\\d{2}-\\d{2})\\.xlsx");
+
+        for (int i = 0; i < files.length; i++) {
+            String fileName = files[i].getName();
+
+            Matcher matcher = pattern.matcher(fileName);
+            if (matcher.matches()) {
+                String datePart = matcher.group(1);
+                LocalDate fileDate = LocalDate.parse(datePart);
+
+                if (fileDate.getYear() == year && fileDate.getMonthValue() == month) {
+                    matchedFile = files[i];
+                    break;
+                }
+            }
+        }
+
+        if (matchedFile == null) {
+            // throw new FileNotFoundException("No Excel file found for given month and year."); 
+        	throw new SalaryNotCreditedException("Salary is not credited for the selected month and year."); 
+        } 
+
+        try (Workbook workbook = WorkbookFactory.create(matchedFile)) {
+            Sheet sheet = workbook.getSheetAt(0);
+            Row headerRow = sheet.getRow(1);
+            Row matchedRow = null;
+
+            for (int r = 1; r <= sheet.getLastRowNum(); r++) {
+                Row row = sheet.getRow(r);
+                if (row != null && row.getCell(1) != null) {
+                    String cellValue = getCellValue(row.getCell(0));
+                    if (managerName.equalsIgnoreCase(cellValue)) {
+                        matchedRow = row;
+                        break;
+                    }
+                }
+            }
+
+            if (matchedRow == null) {
+                // throw new RuntimeException("Employee not found in payroll sheet.");
+            	throw new NotEligibleException("Not eligible."); 
+            } 
+
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            PdfWriter writer = new PdfWriter(out);
+            PdfDocument pdfDoc = new PdfDocument(writer);
+            Document document = new Document(pdfDoc);
+
+            document.add(new Paragraph("Employee Payroll Details")
+                    .setBold()
+                    .setFontSize(16)
+                    .setTextAlignment(TextAlignment.CENTER));
+
+            for (int i = 1; i < headerRow.getLastCellNum(); i++) {
+                String label = getCellValue(headerRow.getCell(i));
+                String value = getCellValue(matchedRow.getCell(i));
+                document.add(new Paragraph(label + " : " + value));
+            }
+
+            document.close();
+            return new ByteArrayResource(out.toByteArray());
+        }
+    } */ 
+	
+	public ByteArrayResource managerGeneratePayrollPdf(String managerName, int month, int year) throws IOException {
+	    File folder = new File(EXPORT_PATH);
+	    File[] files = folder.listFiles();
+
+	    if (files == null) {
+	        throw new FileNotFoundException("Export directory not found.");
+	    }
+
+	    File matchedFile = null;
+	    Pattern pattern = Pattern.compile("employee_salary_(\\d{4}-\\d{2}-\\d{2})\\.xlsx");
+
+	    for (File file : files) {
+	        String fileName = file.getName();
+	        Matcher matcher = pattern.matcher(fileName);
+	        if (matcher.matches()) {
+	            String datePart = matcher.group(1);
+	            LocalDate fileDate = LocalDate.parse(datePart);
+	            if (fileDate.getYear() == year && fileDate.getMonthValue() == month) {
+	                matchedFile = file;
+	                break;
+	            }
+	        }
+	    }
+
+	    if (matchedFile == null) {
+	        throw new SalaryNotCreditedException("Salary is not credited for the selected month and year.");
+	    }
+
+	    try (Workbook workbook = WorkbookFactory.create(matchedFile)) {
+	        Sheet sheet = workbook.getSheetAt(0);
+	        Row headerRow = sheet.getRow(0);
+	        Row matchedRow = null;
+
+	        for (int r = 1; r <= sheet.getLastRowNum(); r++) {
+	            Row row = sheet.getRow(r);
+	            if (row != null && row.getCell(0) != null) {
+	                String cellValue = getCellValue(row.getCell(1));
+	                if (managerName.equalsIgnoreCase(cellValue)) {
+	                    matchedRow = row;
+	                    break;
+	                }
+	            }
+	        }
+
+	        if (matchedRow == null) {
+	            throw new NotEligibleException("Not eligible.");
+	        }
+
+	        ByteArrayOutputStream out = new ByteArrayOutputStream();
+	        PdfWriter writer = new PdfWriter(out);
+	        PdfDocument pdfDoc = new PdfDocument(writer);
+	        Document document = new Document(pdfDoc);
+
+	        document.add(new Paragraph("Manager Payroll Details")
+	                .setBold()
+	                .setFontSize(16)
+	                .setTextAlignment(TextAlignment.CENTER));
+
+	        // Skip column index 0
+	        for (int i = 1; i < headerRow.getLastCellNum(); i++) {
+	            String label = getCellValue(headerRow.getCell(i));
+	            String value = getCellValue(matchedRow.getCell(i));
+	            document.add(new Paragraph(label + " : " + value));
+	        }
+
+	        document.close();
+	        return new ByteArrayResource(out.toByteArray());
+	    }
+	}  
+
 	
 	private String getCellValue(Cell cell) { 
 		if(cell == null) { 

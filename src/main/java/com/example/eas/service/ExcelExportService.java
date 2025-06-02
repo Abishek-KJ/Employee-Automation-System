@@ -65,14 +65,14 @@ public class ExcelExportService {
 		
 		LocalDate currentDate = LocalDate.now(); 
 		
-		String[] headers = {"Employee code", "Employee name", "Employee designation", "Basic salary", "House Rent Allowance", "Conveyance Allowance", "Medical Allowance", "Special Allowance", "Provident Fund", "totalAmount", "Gross Salary", "LOP Days", "LOP Amount", "Net Payable"}; 
+		String[] headers = {"Code", "Name", "Designation", "Basic salary", "House Rent Allowance", "Conveyance Allowance", "Medical Allowance", "Special Allowance", "Provident Fund", "totalAmount", "Gross Salary", "LOP Days", "LOP Amount", "Net Payable"}; 
 		
 		Sheet sheet = workbook.createSheet("Employee salary" + currentDate); 
 		
 		Row headerRow = sheet.createRow(0); 
-		headerRow.createCell(0).setCellValue("Employee code"); 
-		headerRow.createCell(1).setCellValue("Employee name"); 
-		headerRow.createCell(2).setCellValue("Employee designation"); 
+		headerRow.createCell(0).setCellValue("Code"); 
+		headerRow.createCell(1).setCellValue("Name"); 
+		headerRow.createCell(2).setCellValue("Designation"); 
 		headerRow.createCell(3).setCellValue("Basic salary"); 
 		headerRow.createCell(4).setCellValue("House Rent Allowance"); 
 		headerRow.createCell(5).setCellValue("Conveyance Allowance"); 

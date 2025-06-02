@@ -2,6 +2,7 @@ package com.example.eas.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -14,7 +15,9 @@ import com.example.eas.service.ManagerSignupService;
 import com.example.eas.utility.SessionChecker;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -119,5 +122,53 @@ public class ManagerSignupController {
 			return "redirect:/manager/show"; 
 		} 
 	} 
+	
+	// Manager change password 
+	
+			@Transactional 
+			@PostMapping("/update-password") 
+			public String updatePassword(@RequestParam String currentPassword, @RequestParam String newPassword, @RequestParam String confirmPassword, HttpSession session) { 
+				
+				String mailId = (String) session.getAttribute("managerLoggedInEmail"); 
+				System.out.println("Mail identity from session : " + mailId); 
+				System.out.println(session.getId()); 
+				
+				System.out.println("Mail identity exists in session : " + sessionChecker.isSessionKeyPresent(session, "managerLoggedInEmail")); 
+				
+				// If email is not found in session, redirect to login 
+				
+				if(mailId == null) { 
+					return "Echangepassword"; 
+				} 
+				
+				try { 
+					Query query = entityManager.createQuery("SELECT e.password FROM ManagerSignup e WHERE e.managerMailId = :managerMailId"); 
+					query.setParameter("managerMailId", mailId); 
+					String storedPassword = (String) query.getSingleResult(); 
+					
+					if(!storedPassword.equals(currentPassword)) { 
+						return "Echangepassword"; 
+					} 
+					
+					if(!newPassword.equals(confirmPassword)) { 
+						return "Echangepassword"; 
+					} 
+					
+					// Update the password 
+					Query updateQuery = entityManager.createQuery("UPDATE ManagerSignup e SET e.password = :newPassword WHERE e.managerMailId = :managerMailId"); 
+					updateQuery.setParameter("newPassword", newPassword); 
+					updateQuery.setParameter("managerMailId", mailId); 
+					updateQuery.executeUpdate(); 
+					
+					session.invalidate(); 
+					
+					return "Mchangepassword"; 
+				} 
+				catch(NoResultException exception) { 
+					return "redirect:/change-password?error=User not found"; 
+				} 
+				
+			} 
+
 
 } 
