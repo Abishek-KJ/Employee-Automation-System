@@ -53,7 +53,7 @@ public class ManagerApplyLeaveService {
 			entityManager.merge(managerApplyLeave); 
 			
 			try { 
-				emailService.sendEmail("kjabishek2003@gmail.com", "employeeautomationsystem@gmail.com", "Leave request : " + (status == 1 ? "Approved" : "Rejected"), "Your leave from " + managerApplyLeave.getLeaveFrom() + " to " + managerApplyLeave.getLeaveTo() + " has been " + (status == 1 ? "Approved." : "Rejected.") + "<br>" + "<br> Best regards : " + "<br>" + "<br> Administrator Name"); 
+				emailService.sendEmail("kjabishek2003@gmail.com", "employeeautomationsystem@gmail.com", "Leave request : " + (status == 1 ? "Approved" : "Rejected"), "Your leave from " + managerApplyLeave.getLeaveFrom() + " to " + managerApplyLeave.getLeaveTo() + " has been " + (status == 1 ? "Approved." : "Rejected.") + "<br>" + "<br> Best regards : " + "<br>" + "<br> Administrator 1"); 
 			} 
 			catch(Exception exception) { 
 				exception.printStackTrace(); 
